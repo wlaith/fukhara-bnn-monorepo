@@ -1,0 +1,30 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-canvas text-primary font-body text-body;
+    line-height: 1.4;
+  }
+
+  h1,
+  h2,
+  h3 {
+    @apply font-heading;
+  }
+
+  a {
+    @apply text-accent;
+  }
+}
+
+@layer components {
+  .border-subtle {
+    box-shadow: inset 0 0 0 1px #3a4245;
+  }
+
+  .page-shell {
+    @apply px-4 md:px-8 md:px-[8vw] xl:px-[14vw];
+  }
+}

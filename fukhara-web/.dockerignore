@@ -1,0 +1,36 @@
+.git
+.gitattributes
+.github
+
+Dockerfile
+docker-compose.yaml
+docker-compose.yml
+compose.yaml
+.dockerignore
+
+*.md
+LICENSE
+docs/*
+# nuxt-api-party generates the API types from the OpenAPI spec at build time
+!docs/openapi.json
+
+.yamlignore
+.gitignore
+
+.DS_Store
+
+.vscode
+.editorconfig
+.prettierrc
+.vercel
+
+# never part of the build context
+.env*
+
+.woodpecker/
+
+
+node_modules/
+dist
+.nuxt
+.output

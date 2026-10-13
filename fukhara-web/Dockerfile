@@ -1,0 +1,60 @@
+ARG NODE_VERSION=24 PNPM_VERSION=12.8.1 USER=node WORKSPACE_PATH=/workspace APP_PATH=/app
+
+# Build metadata passed by Woodpecker
+ARG CI_REPO_URL
+ARG CI_COMMIT_SHA
+ARG CI_PIPELINE_URL
+ARG CI_PIPELINE_CREATED
+ARG CI_PIPELINE_NUMBER
+ARG CI_PIPELINE_FORGE_URL
+
+FROM node:${NODE_VERSION} AS builder
+
+ARG WORKSPACE_PATH
+ARG PNPM_VERSION
+
+RUN corepack enable && corepack prepare pnpm@${PNPM_VERSION} --activate
+
+WORKDIR $WORKSPACE_PATH
+COPY package.json pnpm-lock.yaml ./
+RUN pnpm install --frozen-lockfile --ignore-scripts
+
+# nuxt prepare needs the sources
+COPY . .
+RUN pnpm run postinstall
+
+RUN pnpm run lint
+RUN NODE_ENV=production pnpm run build
+
+FROM node:${NODE_VERSION}-slim
+
+ARG APP_PATH
+ARG WORKSPACE_PATH
+
+# ARGs are scoped per stage
+ARG USER=node
+ARG CI_REPO_URL
+ARG CI_COMMIT_SHA
+ARG CI_PIPELINE_URL
+ARG CI_PIPELINE_CREATED
+ARG CI_PIPELINE_NUMBER
+ARG CI_PIPELINE_FORGE_URL
+
+WORKDIR ${APP_PATH}
+COPY --from=builder --chown=${USER}:${USER} ${WORKSPACE_PATH}/package.json ${APP_PATH}/package.json
+COPY --from=builder --chown=${USER}:${USER} ${WORKSPACE_PATH}/.output ${APP_PATH}/.output
+
+USER ${USER}
+
+ENV NODE_ENV=production
+ENV PORT=3000
+ENV NUXT_PUBLIC_CI_BUILD_NUMBER=${CI_PIPELINE_NUMBER}
+ENV NUXT_PUBLIC_CI_BUILD_LINK=${CI_PIPELINE_URL}
+ENV NUXT_PUBLIC_BUILD_REPO_LINK=${CI_REPO_URL}
+ENV NUXT_PUBLIC_CI_COMMIT_SHA=${CI_COMMIT_SHA}
+ENV NUXT_PUBLIC_CI_COMMIT_LINK=${CI_PIPELINE_FORGE_URL}
+ENV NUXT_PUBLIC_BUILD_TIMESTAMP=${CI_PIPELINE_CREATED}
+
+EXPOSE 3000
+
+CMD [ "node", "/app/.output/server/index.mjs"]

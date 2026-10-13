@@ -1,0 +1,51 @@
+{
+  "name": "fukhara-web",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "nuxt dev",
+    "build": "nuxt build",
+    "preview": "nuxt preview",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "lint": "eslint .",
+    "format": "prettier --write \"app/**/*.{ts,vue,css}\"",
+    "generate:api-types": "openapi-typescript docs/openapi.json -o app/api/schema.ts",
+    "generate": "nuxt generate",
+    "start": "node .output/server/index.mjs",
+    "postinstall": "nuxt prepare",
+    "typecheck": "nuxt typecheck"
+  },
+  "dependencies": {
+    "@nuxtjs/i18n": "^10.6.0",
+    "nuxt": "^4.6.1",
+    "nuxt-api-party": "^4.0.1",
+    "vue": "^3.5.40",
+    "vue-i18n": "^11.4.12"
+  },
+  "devDependencies": {
+    "@eslint/css": "^2.0.0",
+    "@eslint/js": "^10.0.1",
+    "@eslint/json": "^2.1.0",
+    "@eslint/markdown": "^8.0.3",
+    "@nuxt/eslint": "^1.17.0",
+    "@nuxt/test-utils": "^4.3.3",
+    "@nuxtjs/tailwindcss": "^6.14.0",
+    "@vitejs/plugin-vue": "^6.0.9",
+    "@vue/test-utils": "^2.4.11",
+    "eslint": "^10.0.0",
+    "eslint-config-prettier": "^9.1.2",
+    "eslint-plugin-vue": "^10.11.1",
+    "globals": "^17.12.0",
+    "jiti": "^2.7.0",
+    "jsdom": "^30.1.2",
+    "openapi-typescript": "^7.13.0",
+    "prettier": "^3.9.6",
+    "tailwindcss": "^3.4.19",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.70.1",
+    "vitest": "^5.0.3",
+    "vue-tsc": "^3.3.12"
+  },
+  "packageManager": "pnpm@12.8.1+sha512.f64ba907507f5ceafe06c8d38e6052d0179444580ec1279ddd5bfc11cb48aa8a2644b66598e07e761da84872a9fc57d5f902b87fa49d024198d558612aabbe45"
+}

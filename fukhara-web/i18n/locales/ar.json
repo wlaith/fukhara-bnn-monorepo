@@ -1,0 +1,309 @@
+{
+  "appHeader": {
+    "about": "حول",
+    "analyze": "تحليل",
+    "toggleMenu": "فتح القائمة"
+  },
+  "containedList": {
+    "noFindings": "لا نتائج"
+  },
+  "common": {
+    "loading": "جارٍ التحميل…",
+    "copyValue": "نسخ {label}",
+    "copied": "تم النسخ",
+    "opensInNewTab": "(يُفتح في علامة تبويب جديدة)",
+    "showMore": "عرض {count} إضافية"
+  },
+  "affectedFiles": {
+    "title": "الملفات المتأثرة",
+    "lines": "الأسطر",
+    "showAll": "عرض جميع الملفات ({count})",
+    "showFewer": "عرض ملفات أقل"
+  },
+  "fileUpload": {
+    "dropPrompt": "اسحب الملفات وأفلتها هنا أو انقر للرفع",
+    "invalidType": "يُسمح فقط بملفات .apk.",
+    "remove": "إزالة {name}"
+  },
+  "homeView": {
+    "heroTitle": "تحقق من التطبيق قبل أن تثق به.",
+    "heroBody": "ارفع ملف تطبيق أندرويد (.apk)، وسنخبرك ما إذا كان يبدو خطيرًا أم لا ولماذا.",
+    "uploadFailed": "حدث خطأ أثناء تحليل هذا الملف. يرجى المحاولة مرة أخرى.",
+    "analyze": "تحليل",
+    "analyzing": "جارٍ التحليل…",
+    "howTo": {
+      "getApk": {
+        "title": "01 احصل على ملف APK",
+        "body": "يحلّل فخارة ملفات ‎.APK، ويمكنك تصدير تطبيقات أندرويد لديك كملفات APK ليحلّلها فخارة.",
+        "link": "كيف تحصل على ملف APK"
+      },
+      "upload": {
+        "title": "02 ارفع ملف APK",
+        "body": "اسحب ملف APK وأفلته في فخارة وانتظر انتهاء التحليل.",
+        "note": "متوسط وقت الانتظار دقيقتان، لا تغلق علامة التبويب"
+      },
+      "readReport": {
+        "title": "03 اقرأ التقرير",
+        "body": "يُصدر فخارة تقريرًا بجميع نتائجه، والأسباب وراءها، والحكم الذي توصّل إليه.",
+        "note": "يمكنك تصدير تقريرك",
+        "link": "واجهة فخارة البرمجية على GitHub"
+      }
+    },
+    "builtBy": {
+      "title": "شفافية. انفتاح. مسؤولية.",
+      "body": "طوّرت هذه الأداة {josa}، وهي منظمة أردنية غير ربحية تعزّز المصادر المفتوحة والحقوق الرقمية.",
+      "josa": "الجمعية الأردنية للمصادر المفتوحة (JOSA)"
+    }
+  },
+  "reportHeader": {
+    "eyebrow": "التطبيق المحلَّل"
+  },
+  "verdictBanner": {
+    "reason": "السبب",
+    "recommendedResponse": "الإجراء الموصى به",
+    "severitySuffixFallback": "خطورة",
+    "severityTag": {
+      "high": "خطورة عالية",
+      "medium": "خطورة متوسطة",
+      "low": "خطورة منخفضة"
+    }
+  },
+  "reportView": {
+    "tabs": {
+      "codeAnalysis": "تحليل الشيفرة",
+      "behaviorAnalysis": "تحليل السلوك",
+      "appInformation": "معلومات التطبيق",
+      "threatIntelligence": "استخبارات التهديدات",
+      "network": "الشبكة",
+      "fingerprints": "البصمات",
+      "controlFlow": "تدفق التحكم"
+    }
+  },
+  "analyzingView": {
+    "title": "نقوم بتحليل ملفك",
+    "subtitle": "يستغرق تحليل الملف 3 دقائق في المتوسط",
+    "helperText": "تجمع فخارة بين أدوات متعددة لاستخبارات التهديدات لإنتاج تحليل شامل لتطبيقات الجوال",
+    "steps": {
+      "uploading": "جارٍ رفع الملف",
+      "staticAnalysis": "جارٍ إجراء التحليل الساكن",
+      "threatIntelligence": "جارٍ فحص استخبارات التهديدات",
+      "generatingReport": "جارٍ إنشاء التقرير"
+    },
+    "errors": {
+      "failed": "تعذّر إكمال التحليل. يُرجى محاولة رفع الملف مرة أخرى.",
+      "notFound": "لم نعثر على تحليل لهذا الملف. يُرجى رفعه مرة أخرى.",
+      "timeout": "يستغرق التحليل وقتًا أطول من المتوقع. يُرجى العودة لاحقًا.",
+      "unreachable": "تعذّر الوصول إلى خدمة التحليل. يُرجى المحاولة لاحقًا."
+    }
+  },
+  "severity": {
+    "all": "الكل",
+    "high": "عالية",
+    "warning": "تحذير",
+    "info": "معلومة",
+    "good": "جيد",
+    "dangerous": "خطير",
+    "normal": "عادي",
+    "unknown": "غير معروف"
+  },
+  "subVerdicts": {
+    "codeAnalysis": {
+      "headline": "{count} ثغرات",
+      "highTag": "{count} عالية",
+      "warningTag": "{count} تحذير",
+      "noIssues": "لا توجد مشكلات"
+    },
+    "behaviorAnalysis": {
+      "headline": "{count} خطير",
+      "moderateTag": "{count} متوسط",
+      "unclassifiedTag": "{count} غير مصنّف"
+    },
+    "appInformation": {
+      "headline": "{count} حرج",
+      "moderateTag": "{count} متوسط",
+      "lowTag": "{count} منخفض"
+    },
+    "threatIntelligence": {
+      "flaggedHeadline": "أُبلغ عنه {count} مرة",
+      "noDetections": "لا اكتشافات",
+      "yaraTag": "{count} تطابقات YARA",
+      "noYaraTag": "لا تطابقات YARA",
+      "avTag": "{count} اكتشافات مكافح الفيروسات",
+      "notDetectedTag": "لم يُكتشف بواسطة مكافح الفيروسات",
+      "avUnavailableTag": "نتائج مكافحة الفيروسات غير متاحة"
+    },
+    "network": {
+      "noBadDomains": "لا نطاقات ضارة",
+      "badDomainsHeadline": "{count} نطاقات ضارة",
+      "ofacTag": "{count} مُدرج ضمن OFAC"
+    },
+    "fingerprints": {
+      "headline": "{count} معرّفات مُبلَّغ عنها"
+    },
+    "categories": {
+      "manipulator": "أداة التلاعب",
+      "antiDebug": "مضاد التصحيح",
+      "antiVm": "مضاد الأجهزة الافتراضية",
+      "obfuscator": "أداة التمويه",
+      "protector": "أداة الحماية"
+    }
+  },
+  "codeAnalysis": {
+    "listTitle": "ثغرات الشيفرة · {count} من {total}",
+    "listTitleAll": "ثغرات الشيفرة · {total}",
+    "cvss": "CVSS {score}",
+    "filesCount": "الملفات: {count}",
+    "owaspMobile": "OWASP Mobile",
+    "learnMore": "اعرف المزيد",
+    "opensInNewTab": "(يُفتح في علامة تبويب جديدة)"
+  },
+  "behaviorAnalysis": {
+    "permissionsTitle": "الأذونات",
+    "permissionsTab": "الأذونات ({count})",
+    "behavioursTab": "السلوكيات ({count})",
+    "apiUsageTab": "استخدام الواجهات البرمجية ({count})",
+    "behavioursTitle": "السلوكيات المكتشفة",
+    "apiUsageTitle": "استخدام الواجهات البرمجية الحساسة",
+    "confidence": "ثقة {value}%",
+    "noDescription": "لم يُبلَّغ عن وصف.",
+    "noPermissions": "لم يُبلَّغ عن أي أذونات لهذا التطبيق.",
+    "noBehaviours": "لم يُبلّغ Quark Engine عن أي سلوكيات لهذا التطبيق.",
+    "noApiUsage": "لم يُبلَّغ عن استخدام لواجهات برمجية حساسة."
+  },
+  "appInformation": {
+    "appDetailsTitle": "تفاصيل التطبيق",
+    "certificateTitle": "الشهادة",
+    "componentsTitle": "المكوّنات",
+    "manifestFindingsTitle": "نتائج البيان (Manifest)",
+    "appName": "اسم التطبيق",
+    "package": "الحزمة",
+    "version": "الإصدار",
+    "versionValue": "{name} (البناء {code})",
+    "sdk": "إصدارات Android المدعومة",
+    "sdkMin": "من API {min} فما فوق",
+    "sdkRange": "من API {min} إلى {max}",
+    "signing": "التوقيع",
+    "signed": "موقَّع",
+    "unsigned": "غير موقَّع",
+    "scheme": "مخطط v{version}",
+    "validity": "الحالة",
+    "certValid": "صالحة",
+    "certExpired": "منتهية الصلاحية",
+    "certNotYetValid": "لم تصبح صالحة بعد",
+    "issuer": "الجهة المُصدرة",
+    "validFrom": "صالحة من",
+    "validTo": "صالحة حتى",
+    "activities": "الأنشطة ({count})",
+    "receivers": "المستقبِلات ({count})",
+    "services": "الخدمات ({count})",
+    "mainActivity": "الرئيسي",
+    "components": "المكوّنات المتأثرة",
+    "noComponentsForFinding": "لم يُبلَّغ عن مكوّنات محددة لهذه النتيجة.",
+    "noDetails": "لم يُبلَّغ عن تفاصيل التطبيق.",
+    "noCertificate": "لم يُبلَّغ عن تفاصيل الشهادة.",
+    "noComponents": "لم يُبلَّغ عن أي مكوّنات.",
+    "noManifest": "لم يُبلَّغ عن نتائج في البيان."
+  },
+  "threatIntelligence": {
+    "yaraMatchesTitle": "تطابقات YARA",
+    "noYara": "لم يُبلَّغ عن أي تطابقات YARA.",
+    "unknownSource": "ملف غير معروف",
+    "avTitle": "اكتشافات مكافحة الفيروسات",
+    "avCount": "المحركات: {count}",
+    "noAv": "لم يُرجع VirusTotal أي اكتشافات لهذه العيّنة.",
+    "timelineTitle": "الخط الزمني للعيّنة",
+    "noTimeline": "لم يُبلَّغ عن خط زمني لهذه العيّنة.",
+    "externalTitle": "تقارير خارجية",
+    "openReportFor": "فتح تقرير {service}",
+    "timeline": {
+      "oldest_file_found_in_apk": "أقدم ملف في الحزمة",
+      "latest_file_found_in_apk": "أحدث ملف في الحزمة",
+      "certificate_valid_not_before": "الشهادة صالحة من",
+      "certificate_valid_not_after": "الشهادة صالحة حتى",
+      "first_submission_on_vt": "أول إرسال إلى VirusTotal",
+      "last_submission_on_vt": "آخر إرسال إلى VirusTotal",
+      "upload_on_fukhara": "الرفع إلى فخارة"
+    }
+  },
+  "network": {
+    "domainsTitle": "النطاقات",
+    "domainsTab": "النطاقات ({count})",
+    "urlsTab": "الروابط ({count})",
+    "urlsTitle": "الروابط حسب الملف المصدر",
+    "malicious": "ضار",
+    "ofac": "OFAC",
+    "ofacNote": "مُعلَّم بواسطة فحص عقوبات OFAC في MobSF.",
+    "ip": "عنوان IP",
+    "location": "الموقع",
+    "coordinates": "الإحداثيات",
+    "url": "الرابط",
+    "urlCount": "الروابط: {count}",
+    "unknownSource": "ملف غير معروف",
+    "urlsNote": "تُعرض كنص فقط. هذه الروابط مأخوذة من التطبيق المُحلَّل ولا يمكن فتحها من التقرير.",
+    "noDomains": "لم يُبلَّغ عن أي نطاقات.",
+    "noUrls": "لم يُبلَّغ عن أي روابط.",
+    "noGeolocation": "لم يُبلَّغ عن بيانات موقع لهذا النطاق."
+  },
+  "fingerprints": {
+    "fingerprintsTitle": "البصمات",
+    "identifiersTitle": "المعرّفات",
+    "checksumsTitle": "قيم التحقق (Checksums)",
+    "size": "الحجم",
+    "apkFile": "حزمة APK",
+    "unknownFilename": "غير معروف",
+    "noChecksums": "لم يُبلَّغ عن قيم تحقق.",
+    "noIdentifiers": "لم يُبلَّغ عن معرّفات مُعلَّمة.",
+    "noFuzzyHashes": "لم يُبلَّغ عن بصمات تقريبية."
+  },
+  "controlFlow": {
+    "title": "غير متاح بعد",
+    "description": "لم يُحدَّد بعد تصور الرسم البياني لتدفق التحكم من الخلفية (backend). تحقق مرة أخرى بعد الانتهاء من تحديد عقد بيانات هذا القسم."
+  },
+  "aboutView": {
+    "title": "حول فخارة",
+    "onThisPage": "في هذه الصفحة",
+    "intro": "تفحص فخارة تطبيقات أندرويد وتخبرك إن كانت تبدو خطِرة. تبنيها وتشغّلها الجمعية الأردنية للمصدر المفتوح، علنًا وبشفافية.",
+    "sections": {
+      "who": "من يقف وراء فخارة",
+      "why": "لماذا وُجدت فخارة"
+    },
+    "who": {
+      "orgName": "الجمعية الأردنية للمصدر المفتوح",
+      "orgDescription": "منظمة غير ربحية تسعى إلى أردن أفضل عن طريق الانفتاح تكنولوجيًا",
+      "body": "تبني جوسا فخارة وتشغّلها وتتحمّل مسؤوليتها. إن بدت لك نتيجة خاطئة، أو أردت معرفة من يصل إلى ماذا، فيمكنك التواصل مع المسؤولين عنها.",
+      "glance": {
+        "organization": {
+          "label": "الجهة",
+          "value": "غير ربحية"
+        },
+        "basedIn": {
+          "label": "المقر",
+          "value": "عمّان، الأردن"
+        },
+        "founded": {
+          "label": "التأسيس",
+          "value": "2011"
+        }
+      }
+    },
+    "why": {
+      "p1": "تطبيق أندرويد ليس سوى ملف، ويمكن لأي شخص أن يرسله إليك. التطبيقات المتداولة عبر المحادثات أو البريد أو المواقع لا تمر بفحوصات المتاجر، ولا يمكنك التمييز بين الآمن والخطِر منها بمجرد النظر إليها.",
+      "p2": "تمنحك فخارة إجابة واضحة. ارفع الملف لنخبرك إن كان يبدو خطِرًا ولماذا: بلغة بسيطة أولًا، والتفاصيل التقنية إن رغبت."
+    }
+  },
+  "footer": {
+    "ariaLabel": "تذييل الموقع",
+    "tagline": "تفحص فخارة تطبيقات أندرويد (.apk) وتخبرك بلغة واضحة إن كانت تبدو خطِرة، ولماذا.",
+    "aboutFukhara": "حول فخارة",
+    "builtBy": "تبنيها وتشغّلها الجمعية الأردنية للمصدر المفتوح (JOSA).",
+    "josaWebsite": "زيارة josa.ngo",
+    "dataTitle": "بياناتك",
+    "dataBody": "لا حاجة لإنشاء حساب. يُحلَّل ملفك على خوادم الجمعية نفسها. ولا تتلقى قواعد بيانات التهديدات مثل VirusTotal وMalwareBazaar سوى بصمة الملف (SHA-256)، وليس الملف نفسه.",
+    "privacyPolicy": "سياسة الخصوصية",
+    "openSourceTitle": "مفتوحة المصدر",
+    "openSourceBody": "كل أجزاء فخارة متاحة للعموم. اقرأ الشيفرة، وراجع كيف تُبنى الأحكام، أو شغّل نسختك الخاصة.",
+    "webUiSource": "واجهة الويب على GitHub",
+    "apiSource": "واجهة التحليل البرمجية على GitHub",
+    "newTab": "(تُفتح في علامة تبويب جديدة)"
+  }
+}

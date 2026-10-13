@@ -1,0 +1,6 @@
+.env
+apk_files/
+reports/
+__pycache__/
+elastic-connectors/
+docker-compose.yaml

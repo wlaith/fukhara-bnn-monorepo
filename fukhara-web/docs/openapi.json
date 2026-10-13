@@ -1,0 +1,5972 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "FastAPI",
+    "version": "0.1.0"
+  },
+  "paths": {
+    "/": {
+      "get": {
+        "summary": "Home",
+        "operationId": "home__get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/analyze/": {
+      "post": {
+        "tags": [
+          "Analyze"
+        ],
+        "summary": "Submit an APK for analysis",
+        "description": "Upload an APK file, computes its SHA-256 hash, and queues it for analysis. Return the SHA-256 hash of the APK file",
+        "operationId": "analyze_apk_api_analyze__post",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_analyze_apk_api_analyze__post"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AnalyzeResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/reports/": {
+      "get": {
+        "tags": [
+          "Reports"
+        ],
+        "summary": "List all APK analyses",
+        "description": "Return a list of all APK analysis reports that have been submitted and analyzed",
+        "operationId": "get_reports_api_reports__get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/report/{id}/": {
+      "get": {
+        "tags": [
+          "Analysis Report"
+        ],
+        "summary": "Get the full analysis report",
+        "description": "Return the complete, aggregated analysis report (fingerprints, threat intelligence, app information, code analysis, behavior analysis, and network analysis)",
+        "operationId": "get_report_api_report__id___get",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Analysis report ID (SHA256 checksum of the APK file)",
+              "title": "Id"
+            },
+            "description": "Analysis report ID (SHA256 checksum of the APK file)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReportResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/report/{id}/status/": {
+      "get": {
+        "tags": [
+          "Analysis Report"
+        ],
+        "summary": "Get the analysis status",
+        "description": "Return the analysis status (pending, completed or failed) and which tools have finished running",
+        "operationId": "get_status_api_report__id__status__get",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Analysis report ID (SHA256 checksum of the APK file)",
+              "title": "Id"
+            },
+            "description": "Analysis report ID (SHA256 checksum of the APK file)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AnalysisStatusResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No analysis exists for this ID"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/report/{id}/verdict/": {
+      "get": {
+        "tags": [
+          "Verdict"
+        ],
+        "summary": "Get the sample's final verdict",
+        "description": "Return the final verdict(malicious or not, severity, reason, response needed",
+        "operationId": "get_verdict_api_report__id__verdict__get",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Analysis report ID (SHA256 checksum of the APK file",
+              "title": "Id"
+            },
+            "description": "Analysis report ID (SHA256 checksum of the APK file"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VerdictSectionResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/report/{id}/fingerprints/": {
+      "get": {
+        "tags": [
+          "Fingerprints"
+        ],
+        "summary": "Get fingerprints data",
+        "description": "Return all the fingerprints data (checksums, identifiers, fuzzy hashes)",
+        "operationId": "get_fingerprints_api_report__id__fingerprints__get",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Analysis report ID (SHA256 checksum of the APK file)",
+              "title": "Id"
+            },
+            "description": "Analysis report ID (SHA256 checksum of the APK file)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FingerprintsResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/report/{id}/fingerprints/checksums/": {
+      "get": {
+        "tags": [
+          "Fingerprints"
+        ],
+        "summary": "Get file checksums",
+        "description": "Return file checksums (e.g. MD5, SHA256) computed",
+        "operationId": "get_checksums_api_report__id__fingerprints_checksums__get",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Analysis report ID (SHA256 checksum of the APK file)",
+              "title": "Id"
+            },
+            "description": "Analysis report ID (SHA256 checksum of the APK file)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChecksumSectionResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/report/{id}/fingerprints/identifiers/": {
+      "get": {
+        "tags": [
+          "Fingerprints"
+        ],
+        "summary": "Get APK identifiers",
+        "description": "Return packer/obfuscator/compiler identifiers",
+        "operationId": "get_identifiers_api_report__id__fingerprints_identifiers__get",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Analysis report ID (SHA256 checksum of the APK file)",
+              "title": "Id"
+            },
+            "description": "Analysis report ID (SHA256 checksum of the APK file)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IdentifiersSectionResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/report/{id}/fingerprints/fuzzy-hashes/": {
+      "get": {
+        "tags": [
+          "Fingerprints"
+        ],
+        "summary": "Get fuzzy hashes",
+        "description": "Return fuzzy hash values (e.g. ssdeep) used for similarity comparisons",
+        "operationId": "get_fuzzy_hashes_api_report__id__fingerprints_fuzzy_hashes__get",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Analysis report ID (SHA256 checksum of the APK file)",
+              "title": "Id"
+            },
+            "description": "Analysis report ID (SHA256 checksum of the APK file)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FuzzyHashesSectionResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/report/{id}/threat-intelligence/": {
+      "get": {
+        "tags": [
+          "Threat Intelligence"
+        ],
+        "summary": "Get all threat intelligence data",
+        "description": "Return all the threat intelligence data (sample timeline, YARA matches, antivirus detections, third-party lookups)",
+        "operationId": "get_threat_intelligence_api_report__id__threat_intelligence__get",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Analysis report ID (SHA256 checksum of the APK file)",
+              "title": "Id"
+            },
+            "description": "Analysis report ID (SHA256 checksum of the APK file)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ThreatIntelligenceResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/report/{id}/threat-intelligence/timeline/": {
+      "get": {
+        "tags": [
+          "Threat Intelligence"
+        ],
+        "summary": "Get sample timeline",
+        "description": "Return key dates for the sample (file creation, certficate validaity, first/last submission)",
+        "operationId": "get_sample_timeline_api_report__id__threat_intelligence_timeline__get",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Analysis report ID (SHA256 checksum of the APK file)",
+              "title": "Id"
+            },
+            "description": "Analysis report ID (SHA256 checksum of the APK file)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TimelineSectionResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/report/{id}/threat-intelligence/yara/": {
+      "get": {
+        "tags": [
+          "Threat Intelligence"
+        ],
+        "summary": "Get YARA rule matches",
+        "description": "Return the YARA rule match results",
+        "operationId": "get_yara_analysis_api_report__id__threat_intelligence_yara__get",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Analysis report ID (SHA256 checksum of the APK file)",
+              "title": "Id"
+            },
+            "description": "Analysis report ID (SHA256 checksum of the APK file)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/YaraSectionResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/report/{id}/threat-intelligence/popular-av-detections/": {
+      "get": {
+        "tags": [
+          "Threat Intelligence"
+        ],
+        "summary": "Get popular antivirus detections",
+        "description": "Return the popular antivirus engine detections",
+        "operationId": "get_antivirus_detections_api_report__id__threat_intelligence_popular_av_detections__get",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Analysis report ID (SHA256 checksum of the APK file)",
+              "title": "Id"
+            },
+            "description": "Analysis report ID (SHA256 checksum of the APK file)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AVDetectionsSectionResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/report/{id}/threat-intelligence/third-party-apps/": {
+      "get": {
+        "tags": [
+          "Threat Intelligence"
+        ],
+        "summary": "Get 3rd-party lookup results",
+        "description": "Return lookup results for 3rd-party threat intelligence sources (e.g. VirusTotal, MalwareBazaar)",
+        "operationId": "get_third_party_apps_api_report__id__threat_intelligence_third_party_apps__get",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Analysis report ID (SHA256 checksum of the APK file)",
+              "title": "Id"
+            },
+            "description": "Analysis report ID (SHA256 checksum of the APK file)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ThirdPartySectionResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/report/{id}/app/": {
+      "get": {
+        "tags": [
+          "App Info"
+        ],
+        "summary": "Get all app information",
+        "description": "Return the full app information (details, certificates, manifests, activities, receivers, services)",
+        "operationId": "get_app_analysis_api_report__id__app__get",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Analysis report ID (SHA256 checksum of the APK file)",
+              "title": "Id"
+            },
+            "description": "Analysis report ID (SHA256 checksum of the APK file)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AppAnalysisResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/report/{id}/app/details/": {
+      "get": {
+        "tags": [
+          "App Info"
+        ],
+        "summary": "Get app details",
+        "description": "Return basic app metadata (package name, version, size, etc.",
+        "operationId": "get_app_details_api_report__id__app_details__get",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Analysis report ID (SHA256 checksum of the APK file)",
+              "title": "Id"
+            },
+            "description": "Analysis report ID (SHA256 checksum of the APK file)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APKDetailsSectionResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/report/{id}/app/certificate/": {
+      "get": {
+        "tags": [
+          "App Info"
+        ],
+        "summary": "Get signing certificate details",
+        "description": "Return the APK's signing certificate details (issuer, subject, validity, etc.)",
+        "operationId": "get_app_certificate_api_report__id__app_certificate__get",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Analysis report ID (SHA256 checksum of the APK file)",
+              "title": "Id"
+            },
+            "description": "Analysis report ID (SHA256 checksum of the APK file)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CertificateSectionResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/report/{id}/app/manifests/": {
+      "get": {
+        "tags": [
+          "App Info"
+        ],
+        "summary": "Get app manifests",
+        "description": "Return a list of manifests declared in the app's manifest files (AndroidManifest.xml, etc.)",
+        "operationId": "get_app_manifests_api_report__id__app_manifests__get",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Analysis report ID (SHA256 checksum of the APK file)",
+              "title": "Id"
+            },
+            "description": "Analysis report ID (SHA256 checksum of the APK file)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ManifestSectionResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/report/{id}/app/activities/": {
+      "get": {
+        "tags": [
+          "App Info"
+        ],
+        "summary": "Get app activities",
+        "description": "Return a list of activities declared in the app's manifest files (AndroidManifest.xml, etc. )",
+        "operationId": "get_app_activities_api_report__id__app_activities__get",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Analysis report ID (SHA256 checksum of the APK file)",
+              "title": "Id"
+            },
+            "description": "Analysis report ID (SHA256 checksum of the APK file)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ActivitiesSectionResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/report/{id}/app/receivers/": {
+      "get": {
+        "tags": [
+          "App Info"
+        ],
+        "summary": "Get app receivers",
+        "description": "Return a list of receivers declared in the app's manifest files (AndroidManifest.xml, etc.)",
+        "operationId": "get_app_receivers_api_report__id__app_receivers__get",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Analysis report ID (SHA256 checksum of the APK file)",
+              "title": "Id"
+            },
+            "description": "Analysis report ID (SHA256 checksum of the APK file)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReceiversSectionResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/report/{id}/app/services/": {
+      "get": {
+        "tags": [
+          "App Info"
+        ],
+        "summary": "Get app services",
+        "description": "Return a list of services declared in the app's manifest files (AndroidManifest.xml, etc.)",
+        "operationId": "get_app_services_api_report__id__app_services__get",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Analysis report ID (SHA256 checksum of the APK file)",
+              "title": "Id"
+            },
+            "description": "Analysis report ID (SHA256 checksum of the APK file)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServicesSectionResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/report/{id}/code/": {
+      "get": {
+        "tags": [
+          "Code Analysis"
+        ],
+        "summary": "Get all code analysis results",
+        "description": "Return the full code analysis results (NIAP compliance, vulnerabilities)",
+        "operationId": "get_code_analysis_api_report__id__code__get",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Analysis report ID (SHA256 checksum of the APK file)",
+              "title": "Id"
+            },
+            "description": "Analysis report ID (SHA256 checksum of the APK file)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CodeAnalysisResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/report/{id}/code/niap/": {
+      "get": {
+        "tags": [
+          "Code Analysis"
+        ],
+        "summary": "Get NIAP analysis",
+        "description": "Return the NIAP (National Information Assurance Program) compliance analysis results",
+        "operationId": "get_niap_analysis_api_report__id__code_niap__get",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Analysis report ID (SHA256 checksum of the APK file)",
+              "title": "Id"
+            },
+            "description": "Analysis report ID (SHA256 checksum of the APK file)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NiapSectionResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/report/{id}/code/vulnerabilities/": {
+      "get": {
+        "tags": [
+          "Code Analysis"
+        ],
+        "summary": "Get code vulnerabilities",
+        "description": "Return a list of vulnerabilities detected via static analysis of the code",
+        "operationId": "get_code_vulnerabilities_api_report__id__code_vulnerabilities__get",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Analysis report ID (SHA256 checksum of the APK file)",
+              "title": "Id"
+            },
+            "description": "Analysis report ID (SHA256 checksum of the APK file)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CodeVulnerabilitiesSectionResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/report/{id}/behavior/": {
+      "get": {
+        "tags": [
+          "Behavior Analysis"
+        ],
+        "summary": "Get all behavior analysis results",
+        "description": "Return the full behavior analysis results (threats, permissions, detailed permissions)",
+        "operationId": "get_behavior_analysis_api_report__id__behavior__get",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Analysis report ID (SHA256 checksum of the APK file)",
+              "title": "Id"
+            },
+            "description": "Analysis report ID (SHA256 checksum of the APK file)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BehaviorAnalysisResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/report/{id}/behavior/threats/": {
+      "get": {
+        "tags": [
+          "Behavior Analysis"
+        ],
+        "summary": "Get behavioral threats",
+        "description": "Return a list of threats (crimes) detected",
+        "operationId": "get_threats_analysis_api_report__id__behavior_threats__get",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Analysis report ID (SHA256 checksum of the APK file)",
+              "title": "Id"
+            },
+            "description": "Analysis report ID (SHA256 checksum of the APK file)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ThreatsSectionResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/report/{id}/behavior/permissions/": {
+      "get": {
+        "tags": [
+          "Behavior Analysis"
+        ],
+        "summary": "Get permissions analysis",
+        "description": "Return a list of permissions requested by the APK",
+        "operationId": "get_permission_analysis_api_report__id__behavior_permissions__get",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Analysis report ID (SHA256 checksum of the APK file)",
+              "title": "Id"
+            },
+            "description": "Analysis report ID (SHA256 checksum of the APK file)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PermissionsSectionResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/report/{id}/behavior/detailed-permissions/": {
+      "get": {
+        "tags": [
+          "Behavior Analysis"
+        ],
+        "summary": "Get detailed permission analysis",
+        "description": "Return a list of detailed permissions requested by the APK",
+        "operationId": "get_detailed_permissions_api_report__id__behavior_detailed_permissions__get",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Analysis report ID (SHA256 checksum of the APK file)",
+              "title": "Id"
+            },
+            "description": "Analysis report ID (SHA256 checksum of the APK file)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DetailedPermissionsSectionResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/report/{id}/control-flow/": {
+      "get": {
+        "tags": [
+          "Control Flow"
+        ],
+        "summary": "Get control-flow graph data",
+        "description": "Return the control-flow graph visualization of the behavior of the APK",
+        "operationId": "get_control_flow_api_report__id__control_flow__get",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Analysis report ID (SHA256 checksum of the APK file)",
+              "title": "Id"
+            },
+            "description": "Analysis report ID (SHA256 checksum of the APK file)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/report/{id}/network/": {
+      "get": {
+        "tags": [
+          "Network Analysis"
+        ],
+        "summary": "Get all network analysis",
+        "description": "Return the network analysis results (domains and URLs)",
+        "operationId": "get_network_analysis_api_report__id__network__get",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Analysis report ID (SHA256 checksum of the APK file)",
+              "title": "Id"
+            },
+            "description": "Analysis report ID (SHA256 checksum of the APK file)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NetworkAnalysisResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/report/{id}/network/domains/": {
+      "get": {
+        "tags": [
+          "Network Analysis"
+        ],
+        "summary": "Get network domains",
+        "description": "Return a list of network domains accessed",
+        "operationId": "get_domain_analysis_api_report__id__network_domains__get",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Analysis report ID (SHA256 checksum of the APK file)",
+              "title": "Id"
+            },
+            "description": "Analysis report ID (SHA256 checksum of the APK file)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainsSectionResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/report/{id}/network/urls/": {
+      "get": {
+        "tags": [
+          "Network Analysis"
+        ],
+        "summary": "Get network URLs",
+        "description": "Return a list of network URLs accessed",
+        "operationId": "get_url_analysis_api_report__id__network_urls__get",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Analysis report ID (SHA256 checksum of the APK file)",
+              "title": "Id"
+            },
+            "description": "Analysis report ID (SHA256 checksum of the APK file)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UrlsSectionResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "APKDetailsResponse": {
+        "properties": {
+          "package": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Package",
+            "description": "Package name of the APK",
+            "examples": [
+              "com.google.android"
+            ]
+          },
+          "app_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "App Name",
+            "description": "Application name of the APK",
+            "examples": [
+              "Google"
+            ]
+          },
+          "version_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Version Name",
+            "description": "Version name of the APK",
+            "examples": [
+              "4.2.0"
+            ]
+          },
+          "version_code": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Version Code",
+            "description": "Version code of the APK",
+            "examples": [
+              400000039
+            ]
+          },
+          "sdk": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sdk",
+            "description": "Software Development Kit (SDK) used for the APK development",
+            "examples": [
+              "21 - None"
+            ]
+          },
+          "uaid": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Uaid",
+            "description": "Unique Application Identifier (UAID) of the APK",
+            "examples": [
+              "58ef88f27b2b2c48519f804a4ff445e387cee78b"
+            ]
+          },
+          "signature": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Signature",
+            "description": "APK signature",
+            "examples": [
+              ""
+            ]
+          },
+          "frosting": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/FrostingResponse"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Frosting information of the APK"
+          }
+        },
+        "type": "object",
+        "title": "APKDetailsResponse",
+        "example": {
+          "app_name": "Google",
+          "frosting": {
+            "is_frosted": "N/A",
+            "v2_signature_blocks": []
+          },
+          "package": "com.google.android",
+          "sdk": "21 - None",
+          "signature": "",
+          "uaid": "58ef88f27b2b2c48519f804a4ff445e387cee78b",
+          "version_code": 400000039,
+          "version_name": "4.2.0"
+        }
+      },
+      "APKDetailsSectionResponse": {
+        "properties": {
+          "apk_details": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Envelope_APKDetailsResponse_"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "title": "APKDetailsSectionResponse",
+        "example": {
+          "apk_details": {
+            "computed_with": [
+              "mobsf",
+              "apk_info"
+            ],
+            "data": {
+              "app_name": "Google",
+              "frosting": {
+                "is_frosted": "N/A",
+                "v2_signature_blocks": []
+              },
+              "package": "com.google.android",
+              "sdk": "21 - None",
+              "signature": "",
+              "uaid": "58ef88f27b2b2c48519f804a4ff445e387cee78b",
+              "version_code": 400000039,
+              "version_name": "4.2.0"
+            }
+          }
+        }
+      },
+      "APKiDFiles": {
+        "properties": {
+          "filename": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Filename",
+            "description": "Filename of the analyzed file",
+            "examples": [
+              "classes.dex"
+            ]
+          },
+          "matches": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/APKiDMatches"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Matches found in the analyzed file"
+          }
+        },
+        "type": "object",
+        "title": "APKiDFiles",
+        "example": {
+          "filename": "classes.dex",
+          "matches": {
+            "anti_debug": [
+              "Debug.isDebuggerConnected() check"
+            ],
+            "anti_vm": [
+              "Build.HARDWARE check"
+            ],
+            "compiler": [
+              "r8"
+            ],
+            "manipulator": [
+              "Resource Confusion"
+            ],
+            "obfuscator": [
+              "Alipay"
+            ],
+            "protector": [
+              "MSA SDK"
+            ]
+          }
+        }
+      },
+      "APKiDMatches": {
+        "properties": {
+          "manipulator": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Manipulator",
+            "description": "List of indicators of alteration techniques found by analysis",
+            "examples": [
+              "Resource Confusion"
+            ]
+          },
+          "anti_debug": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Anti Debug",
+            "description": "List of indicators of anti-debugging techniques found by analysis",
+            "examples": [
+              "Debug.isDebuggerConnected() check"
+            ]
+          },
+          "anti_vm": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Anti Vm",
+            "description": "List of indicators of anti-vm techniques found by analysis",
+            "examples": [
+              "Build.HARDWARE check"
+            ]
+          },
+          "compiler": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Compiler",
+            "description": "List of suspecious compilers found",
+            "examples": [
+              "r8"
+            ]
+          },
+          "obfuscator": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Obfuscator",
+            "description": "List of obfuscators found",
+            "examples": [
+              "Alipay"
+            ]
+          },
+          "protector": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Protector",
+            "description": "List of protectors found",
+            "examples": [
+              "MSA SDK"
+            ]
+          }
+        },
+        "type": "object",
+        "title": "APKiDMatches",
+        "example": {
+          "anti_debug": [
+            "Debug.isDebuggerConnected() check"
+          ],
+          "anti_vm": [
+            "Build.HARDWARE check"
+          ],
+          "compiler": [
+            "r8"
+          ],
+          "manipulator": [
+            "Resource Confusion"
+          ],
+          "obfuscator": [
+            "Alipay"
+          ],
+          "protector": [
+            "MSA SDK"
+          ]
+        }
+      },
+      "APKiDResponse": {
+        "properties": {
+          "apkid_version": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Apkid Version",
+            "description": "APKiD verion",
+            "examples": [
+              "3.6.6"
+            ]
+          },
+          "files": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/APKiDFiles"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Files"
+          },
+          "rules_sha256": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Rules Sha256",
+            "description": "SHA256 hash of the YARA rules used by APKiD",
+            "examples": [
+              "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            ]
+          }
+        },
+        "type": "object",
+        "title": "APKiDResponse",
+        "example": {
+          "apkid_version": "3.6.6",
+          "files": [
+            {
+              "filename": "classes.dex",
+              "matches": {
+                "anti_debug": [
+                  "Debug.isDebuggerConnected() check"
+                ],
+                "anti_vm": [
+                  "Build.HARDWARE check"
+                ],
+                "compiler": [
+                  "r8"
+                ],
+                "manipulator": [
+                  "Resource Confusion"
+                ],
+                "obfuscator": [
+                  "Alipay"
+                ],
+                "protector": [
+                  "MSA SDK"
+                ]
+              }
+            }
+          ],
+          "rules_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      "AVDetectionsResponse": {
+        "anyOf": [
+          {
+            "items": {
+              "additionalProperties": {
+                "type": "integer"
+              },
+              "type": "object"
+            },
+            "type": "array"
+          },
+          {
+            "additionalProperties": true,
+            "type": "object"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "title": "AVDetectionsResponse",
+        "example": [
+          {
+            "Avast": 12
+          }
+        ]
+      },
+      "AVDetectionsSectionResponse": {
+        "properties": {
+          "popular_av_detections": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Envelope_AVDetectionsResponse_"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "title": "AVDetectionsSectionResponse",
+        "example": {
+          "popular_av_detections": {
+            "computed_with": [
+              "virustotal"
+            ],
+            "data": [
+              {
+                "Avast": 12
+              }
+            ]
+          }
+        }
+      },
+      "ActivitiesResponse": {
+        "properties": {
+          "main_activity": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Main Activity",
+            "description": "Main activity used by the APK",
+            "examples": [
+              "com.google.android"
+            ]
+          },
+          "all_activities": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "All Activities",
+            "description": "List of all activities used by the APK",
+            "examples": [
+              [
+                "com.google.android",
+                "com.chrome.android"
+              ]
+            ]
+          }
+        },
+        "type": "object",
+        "title": "ActivitiesResponse",
+        "example": {
+          "all_activities": [
+            "com.google.android",
+            "com.chrome.android"
+          ],
+          "main_activity": "com.google.android"
+        }
+      },
+      "ActivitiesSectionResponse": {
+        "properties": {
+          "activities": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Envelope_ActivitiesResponse_"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "title": "ActivitiesSectionResponse",
+        "example": {
+          "activities": {
+            "computed_with": [
+              "mobsf"
+            ],
+            "data": {
+              "all_activities": [
+                "com.google.android",
+                "com.chrome.android"
+              ],
+              "main_activity": "com.google.android"
+            }
+          }
+        }
+      },
+      "AnalysisStatusResponse": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id",
+            "description": "SHA-256 hash of the APK"
+          },
+          "status": {
+            "type": "string",
+            "title": "Status",
+            "description": "Analysis status: pending, completed or failed",
+            "examples": [
+              "pending"
+            ]
+          },
+          "uploaded_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Uploaded At"
+          },
+          "tools_done": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Tools Done",
+            "description": "Tools that have finished running"
+          },
+          "tools_total": {
+            "type": "integer",
+            "title": "Tools Total",
+            "description": "Number of tools the analysis runs"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "status",
+          "tools_total"
+        ],
+        "title": "AnalysisStatusResponse",
+        "example": {
+          "id": "39ac2d9fe73cb2b4d16ae34bb27dce263c338f1c4e443213302bc3493e9de7eb",
+          "status": "pending",
+          "tools_done": [
+            "virustotal",
+            "malwarebazaar",
+            "mobsf"
+          ],
+          "tools_total": 9,
+          "uploaded_at": "2026-10-11 12:00:00.000000"
+        }
+      },
+      "AnalyzeResponse": {
+        "properties": {
+          "status": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Status",
+            "examples": [
+              "success"
+            ]
+          },
+          "id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Id",
+            "description": "SHA-256 hash of the submitted APK, used as the analysis report ID",
+            "examples": [
+              "39ac2d9fe73cb2b4d16ae34bb27dce263c338f1c4e443213302bc3493e9de7eb"
+            ]
+          }
+        },
+        "type": "object",
+        "title": "AnalyzeResponse",
+        "example": {
+          "id": "39ac2d9fe73cb2b4d16ae34bb27dce263c338f1c4e443213302bc3493e9de7eb",
+          "status": "success"
+        }
+      },
+      "ApiUsageFinding": {
+        "properties": {
+          "files": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "type": "string"
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Files",
+            "description": "Map of source file path to matching line number(s), comma-separated",
+            "examples": [
+              {
+                "jakhar/aseem/diva/MainActivity.java": "40,45,50"
+              }
+            ]
+          },
+          "metadata": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ApiUsageMetadata"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "title": "ApiUsageFinding",
+        "example": {
+          "files": {
+            "jakhar/aseem/diva/MainActivity.java": "40,45,50"
+          },
+          "metadata": {
+            "description": "Local File I/O Operations",
+            "severity": "info"
+          }
+        }
+      },
+      "ApiUsageMetadata": {
+        "properties": {
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description",
+            "description": "Description of the API usage category"
+          },
+          "severity": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Severity",
+            "description": "Severity of the usage",
+            "examples": [
+              "info"
+            ]
+          }
+        },
+        "type": "object",
+        "title": "ApiUsageMetadata",
+        "example": {
+          "description": "Local File I/O Operations",
+          "severity": "info"
+        }
+      },
+      "AppAnalysisResponse": {
+        "properties": {
+          "apk_details": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Envelope_APKDetailsResponse_"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "certificate_details": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Envelope_CertificateResponse_"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "manifest_analysis": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Envelope_Union_list_ManifestResponse___dict__"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "acitivities": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Envelope_ActivitiesResponse_"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "receivers": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Envelope_ReceiversResponse_"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "services": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Envelope_ServicesResponse_"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "title": "AppAnalysisResponse",
+        "example": {
+          "acitivities": {
+            "computed_with": [
+              "mobsf"
+            ],
+            "data": {
+              "all_activities": [
+                "com.google.android",
+                "com.chrome.android"
+              ],
+              "main_activity": "com.google.android"
+            }
+          },
+          "apk_details": {
+            "computed_with": [
+              "mobsf",
+              "apk_info"
+            ],
+            "data": {
+              "app_name": "Google",
+              "frosting": {
+                "is_frosted": "N/A",
+                "v2_signature_blocks": []
+              },
+              "package": "com.google.android",
+              "sdk": "21 - None",
+              "signature": "",
+              "uaid": "58ef88f27b2b2c48519f804a4ff445e387cee78b",
+              "version_code": 400000039,
+              "version_name": "4.2.0"
+            }
+          },
+          "certificate_details": {
+            "computed_with": [
+              "apk_info"
+            ],
+            "data": {
+              "issuer": "Common Name: XX\uff1aXX, Organizational Unit: XXXX, Organization: XXXX, Locality: XX, State/Province: XX, Country: XXX",
+              "md5": "9ddde935852443ac9ecc5e794f9917f0",
+              "not_after": "3021-11-25T09:05:22+00:00",
+              "not_before": "2023-07-25T09:05:22+00:00",
+              "sha1": "a6ee6410327ed17751a3e4e7b7a03337d5c00611",
+              "sha256": "b751f0afed43e56cab08e886d8b65a7a4da654d568e5313cfd056ec6a5b1e028"
+            }
+          },
+          "manifest_analysis": {
+            "computed_with": [
+              "mobsf"
+            ],
+            "data": [
+              {
+                "component": [
+                  "5.0-5.0.2",
+                  "21"
+                ],
+                "description": "This application can be installed on an older version of android that has multiple unfixed vulnerabilities",
+                "name": "vulnerable_os_version",
+                "rule": "vulnerable_os_version",
+                "severity": "high",
+                "title": "App can be installed on a vulnerable unpatched Android version 5.0-5.0.2, [minSdk=21"
+              }
+            ]
+          },
+          "receivers": {
+            "computed_with": [
+              "mobsf"
+            ],
+            "data": [
+              "com.google.android.commonlib.service.EnqueueService",
+              "com.google.platform.oaidkit.OAIDLoadService"
+            ]
+          },
+          "services": {
+            "computed_with": [
+              "mobsf"
+            ],
+            "data": [
+              "com.google.android.share.douyin.StayInDouyinReceiver",
+              "com.google.myssdk.share.callback.MysShareCallbackReceiver"
+            ]
+          }
+        }
+      },
+      "BehaviorAnalysisResponse": {
+        "properties": {
+          "threats": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Envelope_list_ThreatResponse__"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "permissions": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Envelope_PermissionsResponse_"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "detailed_permissions": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Envelope_DetailedPermissionsResponse_"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "title": "BehaviorAnalysisResponse",
+        "example": {
+          "detailed_permissions": {
+            "computed_with": [
+              "mobsf"
+            ],
+            "data": {
+              "api_local_file_io": {
+                "files": {
+                  "jakhar/aseem/diva/MainActivity.java": "40,45,50"
+                },
+                "metadata": {
+                  "description": "Local File I/O Operations",
+                  "severity": "info"
+                }
+              }
+            }
+          },
+          "permissions": {
+            "computed_with": [
+              "mobsf"
+            ],
+            "data": {
+              "android.permission.SYSTEM_ALERT_WINDOW": {
+                "description": "Allows an application to show system-alert windows. Malicious applications can take over the entire screen of the phone.",
+                "info": "display system-level alerts",
+                "status": "dangerous"
+              }
+            }
+          },
+          "threats": {
+            "computed_with": [
+              "quark_engine"
+            ],
+            "data": [
+              {
+                "confidence": "80%",
+                "crime": "Read Sensitive Data"
+              }
+            ]
+          }
+        }
+      },
+      "Body_analyze_apk_api_analyze__post": {
+        "properties": {
+          "file": {
+            "type": "string",
+            "contentMediaType": "application/octet-stream",
+            "title": "File",
+            "description": "APK file to analyze"
+          }
+        },
+        "type": "object",
+        "required": [
+          "file"
+        ],
+        "title": "Body_analyze_apk_api_analyze__post"
+      },
+      "CertificateResponse": {
+        "properties": {
+          "md5": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Md5",
+            "description": "MD5 hash of the certificate",
+            "examples": [
+              "9ddde935852443ac9ecc5e794f9917f0"
+            ]
+          },
+          "sha1": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sha1",
+            "description": "SHA1 hash of the certificate",
+            "examples": [
+              "a6ee6410327ed17751a3e4e7b7a03337d5c00611"
+            ]
+          },
+          "sha256": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sha256",
+            "description": "SHA256 hash of the certificate",
+            "examples": [
+              "b751f0afed43e56cab08e886d8b65a7a4da654d568e5313cfd056ec6a5b1e028"
+            ]
+          },
+          "issuer": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Issuer",
+            "description": "Issuer of the certificate",
+            "examples": [
+              "Common Name: XX\uff1aXX, Organizational Unit: XXXX, Organization: XXXX, Locality: XX, State/Province: XX, Country: XXX"
+            ]
+          },
+          "not_before": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Not Before",
+            "description": "Creation date of the certificate",
+            "examples": [
+              "2023-07-25T09:05:22+00:00"
+            ]
+          },
+          "not_after": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Not After",
+            "description": "Expiration date of the certificate",
+            "examples": [
+              "3021-11-25T09:05:22+00:00"
+            ]
+          }
+        },
+        "type": "object",
+        "title": "CertificateResponse",
+        "example": {
+          "issuer": "Common Name: XX\uff1aXX, Organizational Unit: XXXX, Organization: XXXX, Locality: XX, State/Province: XX, Country: XXX",
+          "md5": "9ddde935852443ac9ecc5e794f9917f0",
+          "not_after": "3021-11-25T09:05:22+00:00",
+          "not_before": "2023-07-25T09:05:22+00:00",
+          "sha1": "a6ee6410327ed17751a3e4e7b7a03337d5c00611",
+          "sha256": "b751f0afed43e56cab08e886d8b65a7a4da654d568e5313cfd056ec6a5b1e028"
+        }
+      },
+      "CertificateSectionResponse": {
+        "properties": {
+          "certificate_details": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Envelope_CertificateResponse_"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "title": "CertificateSectionResponse",
+        "example": {
+          "certificate_details": {
+            "computed_with": [
+              "apk_info"
+            ],
+            "data": {
+              "issuer": "Common Name: XX\uff1aXX, Organizational Unit: XXXX, Organization: XXXX, Locality: XX, State/Province: XX, Country: XXX",
+              "md5": "9ddde935852443ac9ecc5e794f9917f0",
+              "not_after": "3021-11-25T09:05:22+00:00",
+              "not_before": "2023-07-25T09:05:22+00:00",
+              "sha1": "a6ee6410327ed17751a3e4e7b7a03337d5c00611",
+              "sha256": "b751f0afed43e56cab08e886d8b65a7a4da654d568e5313cfd056ec6a5b1e028"
+            }
+          }
+        }
+      },
+      "ChecksumResponse": {
+        "properties": {
+          "size": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Size",
+            "description": "Size of the sample",
+            "examples": [
+              "55.67MB"
+            ]
+          },
+          "md5": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Md5",
+            "description": "MD5 hash of the sample",
+            "examples": [
+              "f5936822b4567731e11bd3b03ad2305b"
+            ]
+          },
+          "sha1": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sha1",
+            "description": "SHA1 hash of the sample",
+            "examples": [
+              "c705b93bce7efeedb5036d7416a056a7a01e6bea"
+            ]
+          },
+          "sha256": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sha256",
+            "description": "SHA256 hash of the sample",
+            "examples": [
+              "39ac2d9fe73cb2b4d16ae34bb27dce263c338f1c4e443213302bc3493e9de7eb"
+            ]
+          }
+        },
+        "type": "object",
+        "title": "ChecksumResponse",
+        "example": {
+          "md5": "f5936822b4567731e11bd3b03ad2305b",
+          "sha1": "c705b93bce7efeedb5036d7416a056a7a01e6bea",
+          "sha256": "39ac2d9fe73cb2b4d16ae34bb27dce263c338f1c4e443213302bc3493e9de7eb",
+          "size": "55.67MB"
+        }
+      },
+      "ChecksumSectionResponse": {
+        "properties": {
+          "checksums": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Envelope_ChecksumResponse_"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "title": "ChecksumSectionResponse",
+        "example": {
+          "checksums": {
+            "computed_with": [
+              "mobsf"
+            ],
+            "data": {
+              "md5": "f5936822b4567731e11bd3b03ad2305b",
+              "sha1": "c705b93bce7efeedb5036d7416a056a7a01e6bea",
+              "sha256": "39ac2d9fe73cb2b4d16ae34bb27dce263c338f1c4e443213302bc3493e9de7eb",
+              "size": "55.67MB"
+            }
+          }
+        }
+      },
+      "CodeAnalysisResponse": {
+        "properties": {
+          "niap_analysis": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Envelope_NiapAnalysisResponse_"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "code_vulnerabilties": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Envelope_CodeVulnerabilitiesResponse_"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "title": "CodeAnalysisResponse",
+        "example": {
+          "code_vulnerabilties": {
+            "computed_with": [
+              "mobsf"
+            ],
+            "data": {
+              "android_logging": {
+                "files": {
+                  "jakhar/aseem/diva/LogActivity.java": "24"
+                },
+                "metadata": {
+                  "cvss": 7.5,
+                  "cwe": "CWE-532: Insertion of Sensitive Information into Log File",
+                  "description": "The App logs information. Sensitive information should never be logged.",
+                  "masvs": "MSTG-STORAGE-3",
+                  "owasp-mobile": "M2: Insecure Data Storage",
+                  "ref": "https://github.com/MobSF/owasp-mstg/blob/master/Document/0x05d-Testing-Data-Storage.md#logs",
+                  "severity": "warning"
+                }
+              }
+            }
+          },
+          "niap_analysis": {
+            "computed_with": [
+              "mobsf"
+            ],
+            "data": {}
+          }
+        }
+      },
+      "CodeVulnerabilitiesResponse": {
+        "anyOf": [
+          {
+            "additionalProperties": {
+              "$ref": "#/components/schemas/CodeVulnerabilityFinding"
+            },
+            "type": "object"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "title": "CodeVulnerabilitiesResponse",
+        "example": {
+          "android_logging": {
+            "files": {
+              "jakhar/aseem/diva/LogActivity.java": "24"
+            },
+            "metadata": {
+              "cvss": 7.5,
+              "cwe": "CWE-532: Insertion of Sensitive Information into Log File",
+              "description": "The App logs information. Sensitive information should never be logged.",
+              "masvs": "MSTG-STORAGE-3",
+              "owasp-mobile": "M2: Insecure Data Storage",
+              "ref": "https://github.com/MobSF/owasp-mstg/blob/master/Document/0x05d-Testing-Data-Storage.md#logs",
+              "severity": "warning"
+            }
+          }
+        }
+      },
+      "CodeVulnerabilitiesSectionResponse": {
+        "properties": {
+          "code_vulnerabilities": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Envelope_CodeVulnerabilitiesResponse_"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "title": "CodeVulnerabilitiesSectionResponse",
+        "example": {
+          "code_vulnerabilities": {
+            "computed_with": [
+              "mobsf"
+            ],
+            "data": {
+              "android_logging": {
+                "files": {
+                  "jakhar/aseem/diva/LogActivity.java": "24"
+                },
+                "metadata": {
+                  "cvss": 7.5,
+                  "cwe": "CWE-532: Insertion of Sensitive Information into Log File",
+                  "description": "The App logs information. Sensitive information should never be logged.",
+                  "masvs": "MSTG-STORAGE-3",
+                  "owasp-mobile": "M2: Insecure Data Storage",
+                  "ref": "https://github.com/MobSF/owasp-mstg/blob/master/Document/0x05d-Testing-Data-Storage.md#logs",
+                  "severity": "warning"
+                }
+              }
+            }
+          }
+        }
+      },
+      "CodeVulnerabilityFinding": {
+        "properties": {
+          "files": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "type": "string"
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Files",
+            "description": "Map of source file path to matching line number(s), comma-separated",
+            "examples": [
+              {
+                "jakhar/aseem/diva/LogActivity.java": "24"
+              }
+            ]
+          },
+          "metadata": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/CodeVulnerabilityMetadata"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "title": "CodeVulnerabilityFinding",
+        "example": {
+          "files": {
+            "jakhar/aseem/diva/LogActivity.java": "24"
+          },
+          "metadata": {
+            "cvss": 7.5,
+            "cwe": "CWE-532: Insertion of Sensitive Information into Log File",
+            "description": "The App logs information. Sensitive information should never be logged.",
+            "masvs": "MSTG-STORAGE-3",
+            "owasp-mobile": "M2: Insecure Data Storage",
+            "ref": "https://github.com/MobSF/owasp-mstg/blob/master/Document/0x05d-Testing-Data-Storage.md#logs",
+            "severity": "warning"
+          }
+        }
+      },
+      "CodeVulnerabilityMetadata": {
+        "properties": {
+          "cvss": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Cvss",
+            "description": "CVSS score of the finding",
+            "examples": [
+              7.5
+            ]
+          },
+          "cwe": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Cwe",
+            "description": "CWE identifier and title",
+            "examples": [
+              "CWE-532: Insertion of Sensitive Information into Log File"
+            ]
+          },
+          "owasp-mobile": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Owasp-Mobile",
+            "description": "OWASP Mobile Top 10 category",
+            "examples": [
+              "M2: Insecure Data Storage"
+            ]
+          },
+          "masvs": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Masvs",
+            "description": "MASVS control ID",
+            "examples": [
+              "MSTG-STORAGE-3"
+            ]
+          },
+          "ref": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ref",
+            "description": "Reference link for the finding",
+            "examples": [
+              "https://github.com/MobSF/owasp-mstg/blob/master/Document/0x05d-Testing-Data-Storage.md#logs"
+            ]
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description",
+            "description": "Description of the code finding"
+          },
+          "severity": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Severity",
+            "description": "Severity of the finding",
+            "examples": [
+              "warning"
+            ]
+          }
+        },
+        "type": "object",
+        "title": "CodeVulnerabilityMetadata",
+        "example": {
+          "cvss": 7.5,
+          "cwe": "CWE-532: Insertion of Sensitive Information into Log File",
+          "description": "The App logs information. Sensitive information should never be logged.",
+          "masvs": "MSTG-STORAGE-3",
+          "owasp-mobile": "M2: Insecure Data Storage",
+          "ref": "https://github.com/MobSF/owasp-mstg/blob/master/Document/0x05d-Testing-Data-Storage.md#logs",
+          "severity": "warning"
+        }
+      },
+      "DetailedPermissionsResponse": {
+        "anyOf": [
+          {
+            "additionalProperties": {
+              "$ref": "#/components/schemas/ApiUsageFinding"
+            },
+            "type": "object"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "title": "DetailedPermissionsResponse",
+        "example": {
+          "api_local_file_io": {
+            "files": {
+              "jakhar/aseem/diva/MainActivity.java": "40,45,50"
+            },
+            "metadata": {
+              "description": "Local File I/O Operations",
+              "severity": "info"
+            }
+          }
+        }
+      },
+      "DetailedPermissionsSectionResponse": {
+        "properties": {
+          "detailed_permissions": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Envelope_DetailedPermissionsResponse_"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "title": "DetailedPermissionsSectionResponse",
+        "example": {
+          "detailed_permissions": {
+            "computed_with": [
+              "mobsf"
+            ],
+            "data": {
+              "api_local_file_io": {
+                "files": {
+                  "jakhar/aseem/diva/MainActivity.java": "40,45,50"
+                },
+                "metadata": {
+                  "description": "Local File I/O Operations",
+                  "severity": "info"
+                }
+              }
+            }
+          }
+        }
+      },
+      "DomainInfoResponse": {
+        "properties": {
+          "bad": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Bad",
+            "description": "Whether the domain is flagged as malicious",
+            "examples": [
+              "no"
+            ]
+          },
+          "geolocation": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/GeolocationResponse"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "ofac": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ofac",
+            "description": "Whether the domain appears on the OFAC sanctions list"
+          }
+        },
+        "type": "object",
+        "title": "DomainInfoResponse",
+        "example": {
+          "bad": "no",
+          "geolocation": {
+            "city": "San Francisco",
+            "country_long": "United States of America",
+            "country_short": "US",
+            "ip": "172.67.72.183",
+            "latitude": "37.775700",
+            "longitude": "-122.395203",
+            "region": "California"
+          },
+          "ofac": false
+        }
+      },
+      "DomainsResponse": {
+        "anyOf": [
+          {
+            "additionalProperties": {
+              "$ref": "#/components/schemas/DomainInfoResponse"
+            },
+            "type": "object"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "title": "DomainsResponse",
+        "example": {
+          "payatu.com": {
+            "bad": "no",
+            "geolocation": {
+              "city": "San Francisco",
+              "country_long": "United States of America",
+              "country_short": "US",
+              "ip": "172.67.72.183",
+              "latitude": "37.775700",
+              "longitude": "-122.395203",
+              "region": "California"
+            },
+            "ofac": false
+          }
+        }
+      },
+      "DomainsSectionResponse": {
+        "properties": {
+          "domains": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Envelope_DomainsResponse_"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "title": "DomainsSectionResponse",
+        "example": {
+          "domains": {
+            "computed_with": [
+              "mobsf"
+            ],
+            "data": {
+              "payatu.com": {
+                "bad": "no",
+                "geolocation": {
+                  "city": "San Francisco",
+                  "country_long": "United States of America",
+                  "country_short": "US",
+                  "ip": "172.67.72.183",
+                  "latitude": "37.775700",
+                  "longitude": "-122.395203",
+                  "region": "California"
+                },
+                "ofac": false
+              }
+            }
+          }
+        }
+      },
+      "Envelope_APKDetailsResponse_": {
+        "properties": {
+          "computed_with": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Computed With",
+            "description": "Tool(s) used to compute this data",
+            "examples": [
+              [
+                "mobsf"
+              ]
+            ]
+          },
+          "data": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/APKDetailsResponse"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The computed result"
+          }
+        },
+        "type": "object",
+        "title": "Envelope[APKDetailsResponse]"
+      },
+      "Envelope_AVDetectionsResponse_": {
+        "properties": {
+          "computed_with": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Computed With",
+            "description": "Tool(s) used to compute this data",
+            "examples": [
+              [
+                "mobsf"
+              ]
+            ]
+          },
+          "data": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/AVDetectionsResponse"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The computed result"
+          }
+        },
+        "type": "object",
+        "title": "Envelope[AVDetectionsResponse]"
+      },
+      "Envelope_ActivitiesResponse_": {
+        "properties": {
+          "computed_with": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Computed With",
+            "description": "Tool(s) used to compute this data",
+            "examples": [
+              [
+                "mobsf"
+              ]
+            ]
+          },
+          "data": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ActivitiesResponse"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The computed result"
+          }
+        },
+        "type": "object",
+        "title": "Envelope[ActivitiesResponse]"
+      },
+      "Envelope_CertificateResponse_": {
+        "properties": {
+          "computed_with": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Computed With",
+            "description": "Tool(s) used to compute this data",
+            "examples": [
+              [
+                "mobsf"
+              ]
+            ]
+          },
+          "data": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/CertificateResponse"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The computed result"
+          }
+        },
+        "type": "object",
+        "title": "Envelope[CertificateResponse]"
+      },
+      "Envelope_ChecksumResponse_": {
+        "properties": {
+          "computed_with": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Computed With",
+            "description": "Tool(s) used to compute this data",
+            "examples": [
+              [
+                "mobsf"
+              ]
+            ]
+          },
+          "data": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ChecksumResponse"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The computed result"
+          }
+        },
+        "type": "object",
+        "title": "Envelope[ChecksumResponse]"
+      },
+      "Envelope_CodeVulnerabilitiesResponse_": {
+        "properties": {
+          "computed_with": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Computed With",
+            "description": "Tool(s) used to compute this data",
+            "examples": [
+              [
+                "mobsf"
+              ]
+            ]
+          },
+          "data": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/CodeVulnerabilitiesResponse"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The computed result"
+          }
+        },
+        "type": "object",
+        "title": "Envelope[CodeVulnerabilitiesResponse]"
+      },
+      "Envelope_DetailedPermissionsResponse_": {
+        "properties": {
+          "computed_with": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Computed With",
+            "description": "Tool(s) used to compute this data",
+            "examples": [
+              [
+                "mobsf"
+              ]
+            ]
+          },
+          "data": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/DetailedPermissionsResponse"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The computed result"
+          }
+        },
+        "type": "object",
+        "title": "Envelope[DetailedPermissionsResponse]"
+      },
+      "Envelope_DomainsResponse_": {
+        "properties": {
+          "computed_with": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Computed With",
+            "description": "Tool(s) used to compute this data",
+            "examples": [
+              [
+                "mobsf"
+              ]
+            ]
+          },
+          "data": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/DomainsResponse"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The computed result"
+          }
+        },
+        "type": "object",
+        "title": "Envelope[DomainsResponse]"
+      },
+      "Envelope_FuzzyHashesResponse_": {
+        "properties": {
+          "computed_with": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Computed With",
+            "description": "Tool(s) used to compute this data",
+            "examples": [
+              [
+                "mobsf"
+              ]
+            ]
+          },
+          "data": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/FuzzyHashesResponse"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The computed result"
+          }
+        },
+        "type": "object",
+        "title": "Envelope[FuzzyHashesResponse]"
+      },
+      "Envelope_IdentifiersResponse_": {
+        "properties": {
+          "computed_with": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Computed With",
+            "description": "Tool(s) used to compute this data",
+            "examples": [
+              [
+                "mobsf"
+              ]
+            ]
+          },
+          "data": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/IdentifiersResponse"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The computed result"
+          }
+        },
+        "type": "object",
+        "title": "Envelope[IdentifiersResponse]"
+      },
+      "Envelope_NiapAnalysisResponse_": {
+        "properties": {
+          "computed_with": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Computed With",
+            "description": "Tool(s) used to compute this data",
+            "examples": [
+              [
+                "mobsf"
+              ]
+            ]
+          },
+          "data": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/NiapAnalysisResponse"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The computed result"
+          }
+        },
+        "type": "object",
+        "title": "Envelope[NiapAnalysisResponse]"
+      },
+      "Envelope_PermissionsResponse_": {
+        "properties": {
+          "computed_with": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Computed With",
+            "description": "Tool(s) used to compute this data",
+            "examples": [
+              [
+                "mobsf"
+              ]
+            ]
+          },
+          "data": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/PermissionsResponse"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The computed result"
+          }
+        },
+        "type": "object",
+        "title": "Envelope[PermissionsResponse]"
+      },
+      "Envelope_ReceiversResponse_": {
+        "properties": {
+          "computed_with": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Computed With",
+            "description": "Tool(s) used to compute this data",
+            "examples": [
+              [
+                "mobsf"
+              ]
+            ]
+          },
+          "data": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ReceiversResponse"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The computed result"
+          }
+        },
+        "type": "object",
+        "title": "Envelope[ReceiversResponse]"
+      },
+      "Envelope_ServicesResponse_": {
+        "properties": {
+          "computed_with": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Computed With",
+            "description": "Tool(s) used to compute this data",
+            "examples": [
+              [
+                "mobsf"
+              ]
+            ]
+          },
+          "data": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ServicesResponse"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The computed result"
+          }
+        },
+        "type": "object",
+        "title": "Envelope[ServicesResponse]"
+      },
+      "Envelope_ThirdPartyResponse_": {
+        "properties": {
+          "computed_with": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Computed With",
+            "description": "Tool(s) used to compute this data",
+            "examples": [
+              [
+                "mobsf"
+              ]
+            ]
+          },
+          "data": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ThirdPartyResponse"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The computed result"
+          }
+        },
+        "type": "object",
+        "title": "Envelope[ThirdPartyResponse]"
+      },
+      "Envelope_TimelineResponse_": {
+        "properties": {
+          "computed_with": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Computed With",
+            "description": "Tool(s) used to compute this data",
+            "examples": [
+              [
+                "mobsf"
+              ]
+            ]
+          },
+          "data": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/TimelineResponse"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The computed result"
+          }
+        },
+        "type": "object",
+        "title": "Envelope[TimelineResponse]"
+      },
+      "Envelope_Union_list_ManifestResponse___dict__": {
+        "properties": {
+          "computed_with": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Computed With",
+            "description": "Tool(s) used to compute this data",
+            "examples": [
+              [
+                "mobsf"
+              ]
+            ]
+          },
+          "data": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/ManifestResponse"
+                },
+                "type": "array"
+              },
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Data",
+            "description": "The computed result"
+          }
+        },
+        "type": "object",
+        "title": "Envelope[Union[list[ManifestResponse], dict]]"
+      },
+      "Envelope_UrlsResponse_": {
+        "properties": {
+          "computed_with": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Computed With",
+            "description": "Tool(s) used to compute this data",
+            "examples": [
+              [
+                "mobsf"
+              ]
+            ]
+          },
+          "data": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/UrlsResponse"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The computed result"
+          }
+        },
+        "type": "object",
+        "title": "Envelope[UrlsResponse]"
+      },
+      "Envelope_VerdictResponse_": {
+        "properties": {
+          "computed_with": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Computed With",
+            "description": "Tool(s) used to compute this data",
+            "examples": [
+              [
+                "mobsf"
+              ]
+            ]
+          },
+          "data": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/VerdictResponse"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The computed result"
+          }
+        },
+        "type": "object",
+        "title": "Envelope[VerdictResponse]"
+      },
+      "Envelope_YaraMatchesResponse_": {
+        "properties": {
+          "computed_with": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Computed With",
+            "description": "Tool(s) used to compute this data",
+            "examples": [
+              [
+                "mobsf"
+              ]
+            ]
+          },
+          "data": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/YaraMatchesResponse"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The computed result"
+          }
+        },
+        "type": "object",
+        "title": "Envelope[YaraMatchesResponse]"
+      },
+      "Envelope_list_ThreatResponse__": {
+        "properties": {
+          "computed_with": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Computed With",
+            "description": "Tool(s) used to compute this data",
+            "examples": [
+              [
+                "mobsf"
+              ]
+            ]
+          },
+          "data": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/ThreatResponse"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Data",
+            "description": "The computed result"
+          }
+        },
+        "type": "object",
+        "title": "Envelope[list[ThreatResponse]]"
+      },
+      "FingerprintsResponse": {
+        "properties": {
+          "checksums": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Envelope_ChecksumResponse_"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "identifiers": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Envelope_IdentifiersResponse_"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "fuzzy_hashes": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Envelope_FuzzyHashesResponse_"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "title": "FingerprintsResponse",
+        "example": {
+          "checksums": {
+            "computed_with": [
+              "mobsf"
+            ],
+            "data": {
+              "md5": "f5936822b4567731e11bd3b03ad2305b",
+              "sha1": "c705b93bce7efeedb5036d7416a056a7a01e6bea",
+              "sha256": "39ac2d9fe73cb2b4d16ae34bb27dce263c338f1c4e443213302bc3493e9de7eb",
+              "size": "55.67MB"
+            }
+          },
+          "fuzzy_hashes": {
+            "computed_with": [
+              "ssdeep"
+            ],
+            "data": {
+              "ssdeep": [
+                {
+                  "filename": "classes3.dex",
+                  "fuzzy_hash": "3072:NSOl/RUN4vpCP6MHF10ZFvTXwxbno966V++cGUMFTQT6nMWCPglv9QMj:8GRUOe1UFI+3jODoFD"
+                }
+              ]
+            }
+          },
+          "identifiers": {
+            "computed_with": [
+              "apkid"
+            ],
+            "data": {
+              "apkid": {
+                "files": "{}"
+              }
+            }
+          }
+        }
+      },
+      "FrostingResponse": {
+        "properties": {
+          "is_frosted": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Is Frosted",
+            "description": "Is the APK frosted",
+            "examples": [
+              true,
+              "N/A"
+            ]
+          },
+          "v2_signature_blocks": {
+            "anyOf": [
+              {
+                "items": {},
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "V2 Signature Blocks",
+            "description": "Signature blocks in the APK"
+          }
+        },
+        "type": "object",
+        "title": "FrostingResponse",
+        "example": {
+          "is_frosted": "N/A",
+          "v2_signature_blocks": []
+        }
+      },
+      "FuzzyHashesResponse": {
+        "properties": {
+          "ssdeep": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/SSDeepHashesResponse"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ssdeep",
+            "description": "SSDeep Fuzzy Hashes"
+          }
+        },
+        "type": "object",
+        "title": "FuzzyHashesResponse",
+        "example": {
+          "ssdeep": [
+            {
+              "filename": "classes3.dex",
+              "fuzzy_hash": "3072:NSOl/RUN4vpCP6MHF10ZFvTXwxbno966V++cGUMFTQT6nMWCPglv9QMj:8GRUOe1UFI+3jODoFD"
+            }
+          ]
+        }
+      },
+      "FuzzyHashesSectionResponse": {
+        "properties": {
+          "fuzzy-hashes": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Envelope_FuzzyHashesResponse_"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "title": "FuzzyHashesSectionResponse",
+        "example": {
+          "fuzzy-hashes": {
+            "computed_with": [
+              "ssdeep"
+            ],
+            "data": {
+              "ssdeep": [
+                {
+                  "filename": "classes3.dex",
+                  "fuzzy_hash": "3072:NSOl/RUN4vpCP6MHF10ZFvTXwxbno966V++cGUMFTQT6nMWCPglv9QMj:8GRUOe1UFI+3jODoFD"
+                }
+              ]
+            }
+          }
+        }
+      },
+      "GeolocationResponse": {
+        "properties": {
+          "ip": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ip",
+            "examples": [
+              "172.67.72.183"
+            ]
+          },
+          "country_short": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Country Short",
+            "examples": [
+              "US"
+            ]
+          },
+          "country_long": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Country Long",
+            "examples": [
+              "United States of America"
+            ]
+          },
+          "region": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Region",
+            "examples": [
+              "California"
+            ]
+          },
+          "city": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "City",
+            "examples": [
+              "San Francisco"
+            ]
+          },
+          "latitude": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Latitude",
+            "examples": [
+              "37.775700"
+            ]
+          },
+          "longitude": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Longitude",
+            "examples": [
+              "-122.395203"
+            ]
+          }
+        },
+        "type": "object",
+        "title": "GeolocationResponse",
+        "example": {
+          "city": "San Francisco",
+          "country_long": "United States of America",
+          "country_short": "US",
+          "ip": "172.67.72.183",
+          "latitude": "37.775700",
+          "longitude": "-122.395203",
+          "region": "California"
+        }
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "IdentifiersApkidResponse": {
+        "properties": {
+          "files": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/APKiDResponse"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Files",
+            "description": "Raw APKiD tool output",
+            "examples": [
+              "{}"
+            ]
+          }
+        },
+        "type": "object",
+        "title": "IdentifiersApkidResponse",
+        "example": {
+          "files": {
+            "apkid_version": "3.6.6",
+            "files": [
+              {
+                "filename": "classes.dex",
+                "matches": {
+                  "compiler": [
+                    "r8"
+                  ]
+                }
+              }
+            ],
+            "rules_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        }
+      },
+      "IdentifiersResponse": {
+        "properties": {
+          "apkid": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/IdentifiersApkidResponse"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Results from APKiD"
+          }
+        },
+        "type": "object",
+        "title": "IdentifiersResponse",
+        "example": {
+          "apkid": {
+            "files": {
+              "apkid_version": "3.6.6",
+              "files": [
+                {
+                  "filename": "classes.dex",
+                  "matches": {
+                    "compiler": [
+                      "r8"
+                    ]
+                  }
+                }
+              ],
+              "rules_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            }
+          }
+        }
+      },
+      "IdentifiersSectionResponse": {
+        "properties": {
+          "identifiers": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Envelope_IdentifiersResponse_"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "title": "IdentifiersSectionResponse",
+        "example": {
+          "identifiers": {
+            "computed_with": [
+              "apkid"
+            ],
+            "data": {
+              "apkid": {
+                "files": {
+                  "apkid_version": "3.6.6",
+                  "files": [
+                    {
+                      "filename": "classes.dex",
+                      "matches": {
+                        "compiler": [
+                          "r8"
+                        ]
+                      }
+                    }
+                  ],
+                  "rules_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+                }
+              }
+            }
+          }
+        }
+      },
+      "ManifestResponse": {
+        "properties": {
+          "rule": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Rule",
+            "description": "Manifest name",
+            "examples": [
+              "vulnerable_os_version"
+            ]
+          },
+          "title": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Title",
+            "description": "Manifest title",
+            "examples": [
+              "App can be installed on a vulnerable unpatched Android version 5.0-5.0.2, [minSdk=21"
+            ]
+          },
+          "severity": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Severity",
+            "description": "Manifest threat severity",
+            "examples": [
+              "high"
+            ]
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description",
+            "description": "Manifest description",
+            "examples": [
+              "This application can be installed on an older version of android that has multiple unfixed vulnerabilities"
+            ]
+          },
+          "name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Name",
+            "description": "Manifest name",
+            "examples": [
+              "vulnerable_os_version"
+            ]
+          },
+          "component": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Component",
+            "description": "Manifest components",
+            "examples": [
+              [
+                "5.0-5.0.2",
+                "21"
+              ]
+            ]
+          }
+        },
+        "type": "object",
+        "title": "ManifestResponse",
+        "example": {
+          "component": [
+            "5.0-5.0.2",
+            "21"
+          ],
+          "description": "This application can be installed on an older version of android that has multiple unfixed vulnerabilities",
+          "name": "vulnerable_os_version",
+          "rule": "vulnerable_os_version",
+          "severity": "high",
+          "title": "App can be installed on a vulnerable unpatched Android version 5.0-5.0.2, [minSdk=21"
+        }
+      },
+      "ManifestSectionResponse": {
+        "properties": {
+          "manifest_analysis": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Envelope_Union_list_ManifestResponse___dict__"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "title": "ManifestSectionResponse",
+        "example": {
+          "manifest_analysis": {
+            "computed_with": [
+              "mobsf"
+            ],
+            "data": [
+              {
+                "component": [
+                  "5.0-5.0.2",
+                  "21"
+                ],
+                "description": "This application can be installed on an older version of android that has multiple unfixed vulnerabilities",
+                "name": "vulnerable_os_version",
+                "rule": "vulnerable_os_version",
+                "severity": "high",
+                "title": "App can be installed on a vulnerable unpatched Android version 5.0-5.0.2, [minSdk=21"
+              }
+            ]
+          }
+        }
+      },
+      "NetworkAnalysisResponse": {
+        "properties": {
+          "domains": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Envelope_DomainsResponse_"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "urls": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Envelope_UrlsResponse_"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "title": "NetworkAnalysisResponse",
+        "example": {
+          "domains": {
+            "computed_with": [
+              "mobsf"
+            ],
+            "data": {
+              "payatu.com": {
+                "bad": "no",
+                "geolocation": {
+                  "city": "San Francisco",
+                  "country_long": "United States of America",
+                  "country_short": "US",
+                  "ip": "172.67.72.183",
+                  "latitude": "37.775700",
+                  "longitude": "-122.395203",
+                  "region": "California"
+                },
+                "ofac": false
+              }
+            }
+          },
+          "urls": {
+            "computed_with": [
+              "mobsf"
+            ],
+            "data": [
+              {
+                "path": "jakhar/aseem/diva/APICreds2Activity.java",
+                "urls": [
+                  "http://payatu.com"
+                ]
+              }
+            ]
+          }
+        }
+      },
+      "NiapAnalysisResponse": {
+        "anyOf": [
+          {
+            "additionalProperties": true,
+            "type": "object"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "title": "NiapAnalysisResponse",
+        "example": {}
+      },
+      "NiapSectionResponse": {
+        "properties": {
+          "niap_analysis": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Envelope_NiapAnalysisResponse_"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "title": "NiapSectionResponse",
+        "example": {
+          "niap_analysis": {
+            "computed_with": [
+              "mobsf"
+            ],
+            "data": {}
+          }
+        }
+      },
+      "PermissionInfo": {
+        "properties": {
+          "status": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Status",
+            "description": "MobSF risk classification for the permission",
+            "examples": [
+              "dangerous"
+            ]
+          },
+          "info": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Info",
+            "description": "Short label for what the permission grants",
+            "examples": [
+              "read external storage contents"
+            ]
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description",
+            "description": "Full description of what the permission allows",
+            "examples": [
+              "Allows an application to read from external storage."
+            ]
+          }
+        },
+        "type": "object",
+        "title": "PermissionInfo",
+        "example": {
+          "description": "Allows an application to show system-alert windows. Malicious applications can take over the entire screen of the phone.",
+          "info": "display system-level alerts",
+          "status": "dangerous"
+        }
+      },
+      "PermissionsResponse": {
+        "anyOf": [
+          {
+            "additionalProperties": {
+              "$ref": "#/components/schemas/PermissionInfo"
+            },
+            "type": "object"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "title": "PermissionsResponse",
+        "example": {
+          "android.permission.SYSTEM_ALERT_WINDOW": {
+            "description": "Allows an application to show system-alert windows. Malicious applications can take over the entire screen of the phone.",
+            "info": "display system-level alerts",
+            "status": "dangerous"
+          }
+        }
+      },
+      "PermissionsSectionResponse": {
+        "properties": {
+          "permissions": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Envelope_PermissionsResponse_"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "title": "PermissionsSectionResponse",
+        "example": {
+          "permissions": {
+            "computed_with": [
+              "mobsf"
+            ],
+            "data": {
+              "android.permission.SYSTEM_ALERT_WINDOW": {
+                "description": "Allows an application to show system-alert windows. Malicious applications can take over the entire screen of the phone.",
+                "info": "display system-level alerts",
+                "status": "dangerous"
+              }
+            }
+          }
+        }
+      },
+      "ReceiversResponse": {
+        "anyOf": [
+          {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "title": "ReceiversResponse",
+        "example": [
+          "com.google.android.commonlib.service.EnqueueService",
+          "com.google.platform.oaidkit.OAIDLoadService"
+        ]
+      },
+      "ReceiversSectionResponse": {
+        "properties": {
+          "receivers": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Envelope_ReceiversResponse_"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "title": "ReceiversSectionResponse",
+        "example": {
+          "receivers": {
+            "computed_with": [
+              "mobsf"
+            ],
+            "data": [
+              "com.google.android.commonlib.service.EnqueueService",
+              "com.google.platform.oaidkit.OAIDLoadService"
+            ]
+          }
+        }
+      },
+      "ReportResponse": {
+        "properties": {
+          "fingerprints": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/FingerprintsResponse"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "threat_intelligence": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ThreatIntelligenceResponse"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "apk_analysis": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/AppAnalysisResponse"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "code_analysis": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/CodeAnalysisResponse"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "behavior_analysis": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/BehaviorAnalysisResponse"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "network_analysis": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/NetworkAnalysisResponse"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "title": "ReportResponse",
+        "example": {
+          "apk_analysis": {
+            "acitivities": {
+              "computed_with": [
+                "mobsf"
+              ],
+              "data": {
+                "all_activities": [
+                  "com.google.android",
+                  "com.chrome.android"
+                ],
+                "main_activity": "com.google.android"
+              }
+            },
+            "apk_details": {
+              "computed_with": [
+                "mobsf",
+                "apk_info"
+              ],
+              "data": {
+                "app_name": "Google",
+                "frosting": {
+                  "is_frosted": "N/A",
+                  "v2_signature_blocks": []
+                },
+                "package": "com.google.android",
+                "sdk": "21 - None",
+                "signature": "",
+                "uaid": "58ef88f27b2b2c48519f804a4ff445e387cee78b",
+                "version_code": 400000039,
+                "version_name": "4.2.0"
+              }
+            },
+            "certificate_details": {
+              "computed_with": [
+                "apk_info"
+              ],
+              "data": {
+                "issuer": "Common Name: XX\uff1aXX, Organizational Unit: XXXX, Organization: XXXX, Locality: XX, State/Province: XX, Country: XXX",
+                "md5": "9ddde935852443ac9ecc5e794f9917f0",
+                "not_after": "3021-11-25T09:05:22+00:00",
+                "not_before": "2023-07-25T09:05:22+00:00",
+                "sha1": "a6ee6410327ed17751a3e4e7b7a03337d5c00611",
+                "sha256": "b751f0afed43e56cab08e886d8b65a7a4da654d568e5313cfd056ec6a5b1e028"
+              }
+            },
+            "manifest_analysis": {
+              "computed_with": [
+                "mobsf"
+              ],
+              "data": [
+                {
+                  "component": [
+                    "5.0-5.0.2",
+                    "21"
+                  ],
+                  "description": "This application can be installed on an older version of android that has multiple unfixed vulnerabilities",
+                  "name": "vulnerable_os_version",
+                  "rule": "vulnerable_os_version",
+                  "severity": "high",
+                  "title": "App can be installed on a vulnerable unpatched Android version 5.0-5.0.2, [minSdk=21"
+                }
+              ]
+            },
+            "receivers": {
+              "computed_with": [
+                "mobsf"
+              ],
+              "data": [
+                "com.google.android.commonlib.service.EnqueueService",
+                "com.google.platform.oaidkit.OAIDLoadService"
+              ]
+            },
+            "services": {
+              "computed_with": [
+                "mobsf"
+              ],
+              "data": [
+                "com.google.android.share.douyin.StayInDouyinReceiver",
+                "com.google.myssdk.share.callback.MysShareCallbackReceiver"
+              ]
+            }
+          },
+          "behavior_analysis": {
+            "detailed_permissions": {
+              "computed_with": [
+                "mobsf"
+              ],
+              "data": {
+                "api_local_file_io": {
+                  "files": {
+                    "jakhar/aseem/diva/MainActivity.java": "40,45,50"
+                  },
+                  "metadata": {
+                    "description": "Local File I/O Operations",
+                    "severity": "info"
+                  }
+                }
+              }
+            },
+            "permissions": {
+              "computed_with": [
+                "mobsf"
+              ],
+              "data": {
+                "android.permission.SYSTEM_ALERT_WINDOW": {
+                  "description": "Allows an application to show system-alert windows. Malicious applications can take over the entire screen of the phone.",
+                  "info": "display system-level alerts",
+                  "status": "dangerous"
+                }
+              }
+            },
+            "threats": {
+              "computed_with": [
+                "quark_engine"
+              ],
+              "data": [
+                {
+                  "confidence": "80%",
+                  "crime": "Read Sensitive Data"
+                }
+              ]
+            }
+          },
+          "code_analysis": {
+            "code_vulnerabilties": {
+              "computed_with": [
+                "mobsf"
+              ],
+              "data": {
+                "android_logging": {
+                  "files": {
+                    "jakhar/aseem/diva/LogActivity.java": "24"
+                  },
+                  "metadata": {
+                    "cvss": 7.5,
+                    "cwe": "CWE-532: Insertion of Sensitive Information into Log File",
+                    "description": "The App logs information. Sensitive information should never be logged.",
+                    "masvs": "MSTG-STORAGE-3",
+                    "owasp-mobile": "M2: Insecure Data Storage",
+                    "ref": "https://github.com/MobSF/owasp-mstg/blob/master/Document/0x05d-Testing-Data-Storage.md#logs",
+                    "severity": "warning"
+                  }
+                }
+              }
+            },
+            "niap_analysis": {
+              "computed_with": [
+                "mobsf"
+              ],
+              "data": {}
+            }
+          },
+          "fingerprints": {
+            "checksums": {
+              "computed_with": [
+                "mobsf"
+              ],
+              "data": {
+                "md5": "f5936822b4567731e11bd3b03ad2305b",
+                "sha1": "c705b93bce7efeedb5036d7416a056a7a01e6bea",
+                "sha256": "39ac2d9fe73cb2b4d16ae34bb27dce263c338f1c4e443213302bc3493e9de7eb",
+                "size": "55.67MB"
+              }
+            },
+            "fuzzy_hashes": {
+              "computed_with": [
+                "ssdeep"
+              ],
+              "data": {
+                "ssdeep": [
+                  {
+                    "filename": "classes3.dex",
+                    "fuzzy_hash": "3072:NSOl/RUN4vpCP6MHF10ZFvTXwxbno966V++cGUMFTQT6nMWCPglv9QMj:8GRUOe1UFI+3jODoFD"
+                  }
+                ]
+              }
+            },
+            "identifiers": {
+              "computed_with": [
+                "apkid"
+              ],
+              "data": {
+                "apkid": {
+                  "files": "{}"
+                }
+              }
+            }
+          },
+          "network_analysis": {
+            "domains": {
+              "computed_with": [
+                "mobsf"
+              ],
+              "data": {
+                "payatu.com": {
+                  "bad": "no",
+                  "geolocation": {
+                    "city": "San Francisco",
+                    "country_long": "United States of America",
+                    "country_short": "US",
+                    "ip": "172.67.72.183",
+                    "latitude": "37.775700",
+                    "longitude": "-122.395203",
+                    "region": "California"
+                  },
+                  "ofac": false
+                }
+              }
+            },
+            "urls": {
+              "computed_with": [
+                "mobsf"
+              ],
+              "data": [
+                {
+                  "path": "jakhar/aseem/diva/APICreds2Activity.java",
+                  "urls": [
+                    "http://payatu.com"
+                  ]
+                }
+              ]
+            }
+          },
+          "threat_intelligence": {
+            "av-detections": {
+              "computed_with": [
+                "virustotal"
+              ],
+              "data": [
+                {
+                  "Avast": 12
+                }
+              ]
+            },
+            "sample_timeline": {
+              "computed_with": [
+                "fukhara",
+                "virustotal"
+              ],
+              "data": {
+                "certificate_valid_not_after": "2125-11-01 15:53:29",
+                "certificate_valid_not_before": "2025-11-25 15:53:29",
+                "first_submission_on_vt": "2025-11-26 23:20:05",
+                "last_submission_on_vt": "2026-06-23 01:07:16",
+                "latest_file_found_in_apk": "2025-11-27 04:04:48",
+                "oldest_file_found_in_apk": "2025-11-27 04:04:42",
+                "upload_on_fukhara": "2026-07-08 11:58:31.763690"
+              }
+            },
+            "third-party-apps": {
+              "computed_with": [
+                "virustotal",
+                "malwarebazaar"
+              ],
+              "data": {
+                "malwarebazaar": "https://bazaar.abuse.ch/sample/<sha256>",
+                "virustotal": "https://www.virustotal.com/api/v3/files/<sha256>"
+              }
+            },
+            "yara_matches": {
+              "computed_with": [
+                "yara_analyzer"
+              ],
+              "data": {
+                "matches": [
+                  {
+                    "rules": [
+                      "Android_Dynamic_Code_Loading",
+                      "Android_Root_Detection_Bypass"
+                    ],
+                    "source": "classes.dex"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      },
+      "SSDeepHashesResponse": {
+        "properties": {
+          "filename": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Filename",
+            "description": "Filename of the hashed file",
+            "examples": [
+              "classes3.dex"
+            ]
+          },
+          "fuzzy_hash": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Fuzzy Hash",
+            "description": "Fuzzy hash of the file",
+            "examples": [
+              "3072:NSOl/RUN4vpCP6MHF10ZFvTXwxbno966V++cGUMFTQT6nMWCPglv9QMj:8GRUOe1UFI+3jODoFD"
+            ]
+          }
+        },
+        "type": "object",
+        "title": "SSDeepHashesResponse",
+        "example": {
+          "filename": "classes3.dex",
+          "fuzzy_hash": "3072:NSOl/RUN4vpCP6MHF10ZFvTXwxbno966V++cGUMFTQT6nMWCPglv9QMj:8GRUOe1UFI+3jODoFD"
+        }
+      },
+      "ServicesResponse": {
+        "anyOf": [
+          {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "title": "ServicesResponse",
+        "example": [
+          "com.google.android.share.douyin.StayInDouyinReceiver",
+          "com.google.myssdk.share.callback.MysShareCallbackReceiver"
+        ]
+      },
+      "ServicesSectionResponse": {
+        "properties": {
+          "services": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Envelope_ServicesResponse_"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "title": "ServicesSectionResponse",
+        "example": {
+          "services": {
+            "computed_with": [
+              "mobsf"
+            ],
+            "data": [
+              "com.google.android.share.douyin.StayInDouyinReceiver",
+              "com.google.myssdk.share.callback.MysShareCallbackReceiver"
+            ]
+          }
+        }
+      },
+      "ThirdPartyResponse": {
+        "properties": {
+          "virustotal": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Virustotal",
+            "description": "Link to the VirusTotal analysis report",
+            "examples": [
+              "https://www.virustotal.com/api/v3/files/<sha256>"
+            ]
+          },
+          "malwarebazaar": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Malwarebazaar",
+            "description": "Link to the MalwareBazaar sample page",
+            "examples": [
+              "https://bazaar.abuse.ch/sample/<sha256>"
+            ]
+          }
+        },
+        "type": "object",
+        "title": "ThirdPartyResponse",
+        "example": {
+          "malwarebazaar": "https://bazaar.abuse.ch/sample/<sha256>",
+          "virustotal": "https://www.virustotal.com/api/v3/files/<sha256>"
+        }
+      },
+      "ThirdPartySectionResponse": {
+        "properties": {
+          "third-party-apps": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Envelope_ThirdPartyResponse_"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "title": "ThirdPartySectionResponse",
+        "example": {
+          "third-party-apps": {
+            "computed_with": [
+              "virustotal",
+              "malwarebazaar"
+            ],
+            "data": {
+              "malwarebazaar": "https://bazaar.abuse.ch/sample/<sha256>",
+              "virustotal": "https://www.virustotal.com/api/v3/files/<sha256>"
+            }
+          }
+        }
+      },
+      "ThreatIntelligenceResponse": {
+        "properties": {
+          "sample_timeline": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Envelope_TimelineResponse_"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "yara_matches": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Envelope_YaraMatchesResponse_"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "av-detections": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Envelope_AVDetectionsResponse_"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "third-party-apps": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Envelope_ThirdPartyResponse_"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "title": "ThreatIntelligenceResponse",
+        "example": {
+          "av-detections": {
+            "computed_with": [
+              "virustotal"
+            ],
+            "data": [
+              {
+                "Avast": 12
+              }
+            ]
+          },
+          "sample_timeline": {
+            "computed_with": [
+              "fukhara",
+              "virustotal"
+            ],
+            "data": {
+              "certificate_valid_not_after": "2125-11-01 15:53:29",
+              "certificate_valid_not_before": "2025-11-25 15:53:29",
+              "first_submission_on_vt": "2025-11-26 23:20:05",
+              "last_submission_on_vt": "2026-06-23 01:07:16",
+              "latest_file_found_in_apk": "2025-11-27 04:04:48",
+              "oldest_file_found_in_apk": "2025-11-27 04:04:42",
+              "upload_on_fukhara": "2026-07-08 11:58:31.763690"
+            }
+          },
+          "third-party-apps": {
+            "computed_with": [
+              "virustotal",
+              "malwarebazaar"
+            ],
+            "data": {
+              "malwarebazaar": "https://bazaar.abuse.ch/sample/<sha256>",
+              "virustotal": "https://www.virustotal.com/api/v3/files/<sha256>"
+            }
+          },
+          "yara_matches": {
+            "computed_with": [
+              "yara_analyzer"
+            ],
+            "data": {
+              "matches": [
+                {
+                  "rules": [
+                    "Android_Dynamic_Code_Loading",
+                    "Android_Root_Detection_Bypass"
+                  ],
+                  "source": "classes.dex"
+                }
+              ]
+            }
+          }
+        }
+      },
+      "ThreatResponse": {
+        "properties": {
+          "crime": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Crime",
+            "description": "Detected behavioral crime/capability",
+            "examples": [
+              "Read Sensitive Data"
+            ]
+          },
+          "confidence": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Confidence",
+            "description": "Confidence level of the detection",
+            "examples": [
+              "80%"
+            ]
+          }
+        },
+        "type": "object",
+        "title": "ThreatResponse",
+        "example": {
+          "confidence": "80%",
+          "crime": "Read Sensitive Data"
+        }
+      },
+      "ThreatsSectionResponse": {
+        "properties": {
+          "threats": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Envelope_list_ThreatResponse__"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "title": "ThreatsSectionResponse",
+        "example": {
+          "threats": {
+            "computed_with": [
+              "quark_engine"
+            ],
+            "data": [
+              {
+                "confidence": "80%",
+                "crime": "Read Sensitive Data"
+              }
+            ]
+          }
+        }
+      },
+      "TimelineResponse": {
+        "properties": {
+          "oldest_file_found_in_apk": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Oldest File Found In Apk",
+            "description": "Datetime of the oldest file found inside the APK sample",
+            "examples": [
+              "2025-11-27 04:04:42"
+            ]
+          },
+          "certificate_valid_not_before": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Certificate Valid Not Before",
+            "description": "Datetime of the certificate creation",
+            "examples": [
+              "2025-11-25 15:53:29"
+            ]
+          },
+          "latest_file_found_in_apk": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Latest File Found In Apk",
+            "description": "Datetime of the latest file found inside the APK sample",
+            "examples": [
+              "2025-11-27 04:04:48"
+            ]
+          },
+          "first_submission_on_vt": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "First Submission On Vt",
+            "description": "Datetime of the first submission on VirusTotal",
+            "examples": [
+              "2025-11-26 23:20:05"
+            ]
+          },
+          "last_submission_on_vt": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Last Submission On Vt",
+            "description": "Datetime of the latest submission on VirusTotal",
+            "examples": [
+              "2026-06-23 01:07:16"
+            ]
+          },
+          "upload_on_fukhara": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Upload On Fukhara",
+            "description": "Datetime of submission on Fukhara",
+            "examples": [
+              "2026-07-08 11:58:31.763690"
+            ]
+          },
+          "certificate_valid_not_after": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Certificate Valid Not After",
+            "description": "Datetime of the certificate expiration",
+            "examples": [
+              "2125-11-01 15:53:29"
+            ]
+          }
+        },
+        "type": "object",
+        "title": "TimelineResponse",
+        "example": {
+          "certificate_valid_not_after": "2125-11-01 15:53:29",
+          "certificate_valid_not_before": "2025-11-25 15:53:29",
+          "first_submission_on_vt": "2025-11-26 23:20:05",
+          "last_submission_on_vt": "2026-06-23 01:07:16",
+          "latest_file_found_in_apk": "2025-11-27 04:04:48",
+          "oldest_file_found_in_apk": "2025-11-27 04:04:42",
+          "upload_on_fukhara": "2026-07-08 11:58:31.763690"
+        }
+      },
+      "TimelineSectionResponse": {
+        "properties": {
+          "sample_timeline": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Envelope_TimelineResponse_"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "title": "TimelineSectionResponse",
+        "example": {
+          "sample_timeline": {
+            "computed_with": [
+              "fukhara",
+              "virustotal"
+            ],
+            "data": {
+              "certificate_valid_not_after": "2125-11-01 15:53:29",
+              "certificate_valid_not_before": "2025-11-25 15:53:29",
+              "first_submission_on_vt": "2025-11-26 23:20:05",
+              "last_submission_on_vt": "2026-06-23 01:07:16",
+              "latest_file_found_in_apk": "2025-11-27 04:04:48",
+              "oldest_file_found_in_apk": "2025-11-27 04:04:42",
+              "upload_on_fukhara": "2026-07-08 11:58:31.763690"
+            }
+          }
+        }
+      },
+      "UrlEntryResponse": {
+        "properties": {
+          "urls": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Urls",
+            "description": "URL(s) found at this location",
+            "examples": [
+              [
+                "http://payatu.com"
+              ]
+            ]
+          },
+          "path": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Path",
+            "description": "Source file where the URL(s) were found",
+            "examples": [
+              "jakhar/aseem/diva/APICreds2Activity.java"
+            ]
+          }
+        },
+        "type": "object",
+        "title": "UrlEntryResponse",
+        "example": {
+          "path": "jakhar/aseem/diva/APICreds2Activity.java",
+          "urls": [
+            "http://payatu.com"
+          ]
+        }
+      },
+      "UrlsResponse": {
+        "anyOf": [
+          {
+            "items": {
+              "$ref": "#/components/schemas/UrlEntryResponse"
+            },
+            "type": "array"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "title": "UrlsResponse",
+        "example": [
+          {
+            "path": "jakhar/aseem/diva/APICreds2Activity.java",
+            "urls": [
+              "http://payatu.com"
+            ]
+          }
+        ]
+      },
+      "UrlsSectionResponse": {
+        "properties": {
+          "urls": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Envelope_UrlsResponse_"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "title": "UrlsSectionResponse",
+        "example": {
+          "urls": {
+            "computed_with": [
+              "mobsf"
+            ],
+            "data": [
+              {
+                "path": "jakhar/aseem/diva/APICreds2Activity.java",
+                "urls": [
+                  "http://payatu.com"
+                ]
+              }
+            ]
+          }
+        }
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "ctx": {
+            "type": "object",
+            "title": "Context"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      },
+      "VerdictResponse": {
+        "properties": {
+          "verdict": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Verdict",
+            "description": "Final verdict of whether the sample is malicious or not?",
+            "examples": [
+              "Malicious"
+            ]
+          },
+          "severity": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Severity",
+            "description": "How malicious is this sample?",
+            "examples": [
+              "Medium"
+            ]
+          },
+          "reason": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reason",
+            "description": "Why has this sample been categorized as such?",
+            "examples": [
+              "Continuous communication has been found between the sample and suspecious domains"
+            ]
+          },
+          "response": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Response",
+            "description": "What should the user do to respond to this sample?",
+            "examples": [
+              "Delete the sample immediately and hand the phone over to a forensics team for deep analysis"
+            ]
+          }
+        },
+        "type": "object",
+        "title": "VerdictResponse",
+        "example": {
+          "reason": "Continuous communication has been found between the sample and suspecious domains",
+          "response": "Delete the sample immediately and hand the phone over to a forensics team for deep analysis",
+          "severity": "Medium",
+          "verdict": "Malicious"
+        }
+      },
+      "VerdictSectionResponse": {
+        "properties": {
+          "verdict": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Envelope_VerdictResponse_"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "title": "VerdictSectionResponse",
+        "example": {
+          "verdict": {
+            "computed_with": [
+              "fukhara"
+            ],
+            "data": {
+              "reason": "Continuous communication has been found between the sample and suspecious domains",
+              "response": "Delete the sample immediately and hand the phone over to a forensics team for deep analysis",
+              "severity": "Medium",
+              "verdict": "Malicious"
+            }
+          }
+        }
+      },
+      "YaraMatchResponse": {
+        "properties": {
+          "source": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source",
+            "description": "File the YARA rule matched against",
+            "examples": [
+              "classes.dex"
+            ]
+          },
+          "rules": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Rules",
+            "description": "YARA rule name(s) that matched",
+            "examples": [
+              [
+                "Android_Dynamic_Code_Loading",
+                "Android_Root_Detection_Bypass"
+              ]
+            ]
+          }
+        },
+        "type": "object",
+        "title": "YaraMatchResponse",
+        "example": {
+          "rules": [
+            "Android_Dynamic_Code_Loading",
+            "Android_Root_Detection_Bypass"
+          ],
+          "source": "classes.dex"
+        }
+      },
+      "YaraMatchesResponse": {
+        "properties": {
+          "matches": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/YaraMatchResponse"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Matches",
+            "description": "List of YARA rule matches found for the sample"
+          }
+        },
+        "type": "object",
+        "title": "YaraMatchesResponse",
+        "example": {
+          "matches": [
+            {
+              "rules": [
+                "Android_Dynamic_Code_Loading",
+                "Android_Root_Detection_Bypass"
+              ],
+              "source": "classes.dex"
+            }
+          ]
+        }
+      },
+      "YaraSectionResponse": {
+        "properties": {
+          "yara_matches": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Envelope_YaraMatchesResponse_"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "title": "YaraSectionResponse",
+        "example": {
+          "yara_matches": {
+            "computed_with": [
+              "yara_analyzer"
+            ],
+            "data": {
+              "matches": [
+                {
+                  "rules": [
+                    "Android_Dynamic_Code_Loading",
+                    "Android_Root_Detection_Bypass"
+                  ],
+                  "source": "classes.dex"
+                }
+              ]
+            }
+          }
+        }
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Reports",
+      "description": "List all analysis reports for submitted APKs."
+    },
+    {
+      "name": "Analysis Report",
+      "description": "Retrieve all the information about a specific sample."
+    },
+    {
+      "name": "Analyze",
+      "description": "Submit an APK sample for analysis."
+    },
+    {
+      "name": "Verdict",
+      "description": "Retrieve the final verdict over the sample"
+    },
+    {
+      "name": "Fingerprints",
+      "description": "Retrieve the file identity data for a specific sample: checksums, identifier tools, and fuzzy hashes used for similarity matching."
+    },
+    {
+      "name": "Threat Intelligence",
+      "description": "Retrieve the external threat intel for a specific sample: submission timeline, YARA rule matches, antivirus engine detections, and third-party lookups."
+    },
+    {
+      "name": "App Info",
+      "description": "Retrieve the static APK metadata extracted from the manifest and package for a specific sample: app details, signing certificate, manifest analysis, and declared components activities, receivers, services)."
+    },
+    {
+      "name": "Code Analysis",
+      "description": "Retrieve the static code-level analysis results for a specific sample, including NIAP compliance checks and detected code vulnerabilities."
+    },
+    {
+      "name": "Behavior Analysis",
+      "description": "Retrieve the runtime/behavioral findings for a specific sample: detected threats, requested permissions, and detailed permission analysis."
+    },
+    {
+      "name": "Control Flow",
+      "description": "Retrieve the control-flow graph data for a specific sample."
+    },
+    {
+      "name": "Network Analysis",
+      "description": "Retrieve the network indicators for a specific sample: contacted domains and URLs."
+    }
+  ]
+}

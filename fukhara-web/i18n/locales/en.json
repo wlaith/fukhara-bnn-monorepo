@@ -1,0 +1,309 @@
+{
+  "appHeader": {
+    "about": "About",
+    "analyze": "Analyze",
+    "toggleMenu": "Toggle menu"
+  },
+  "containedList": {
+    "noFindings": "No findings"
+  },
+  "common": {
+    "loading": "Loading…",
+    "copyValue": "Copy {label}",
+    "copied": "Copied",
+    "opensInNewTab": "(opens in a new tab)",
+    "showMore": "Show {count} more"
+  },
+  "affectedFiles": {
+    "title": "Affected files",
+    "lines": "Lines",
+    "showAll": "Show all {count} files",
+    "showFewer": "Show fewer files"
+  },
+  "fileUpload": {
+    "dropPrompt": "Drag and drop files here or click to upload",
+    "invalidType": "Only .apk files are supported.",
+    "remove": "Remove {name}"
+  },
+  "homeView": {
+    "heroTitle": "Check an app before you trust it.",
+    "heroBody": "Upload an Android app file (.apk). We tell you whether it looks dangerous or not and why.",
+    "uploadFailed": "Something went wrong analyzing this file. Please try again.",
+    "analyze": "Analyze",
+    "analyzing": "Analyzing…",
+    "howTo": {
+      "getApk": {
+        "title": "01 Get APK file",
+        "body": "Fukhara analyzes .APK files, your android apps can be exported as apks for fukhara to analyze them",
+        "link": "How to get an APK file"
+      },
+      "upload": {
+        "title": "02 Upload APK file",
+        "body": "Drag and drop your apk file to fukhara and wait for analysis",
+        "note": "avg. wait time is 2 minutes, do not close the tab"
+      },
+      "readReport": {
+        "title": "03 Read Report",
+        "body": "Fukhara produces a report with all its findings, the reasoning, and the verdict reached.",
+        "note": "Your report can be exported",
+        "link": "Fukhara API on GitHub"
+      }
+    },
+    "builtBy": {
+      "title": "Transparent. Open. Accountable.",
+      "body": "This tool is built by {josa}, a Jordanian non-profit that promotes open source and digital rights.",
+      "josa": "Jordan Open Source Association (JOSA)"
+    }
+  },
+  "reportHeader": {
+    "eyebrow": "Analyzed Application"
+  },
+  "verdictBanner": {
+    "reason": "Reason",
+    "recommendedResponse": "Recommended Response",
+    "severitySuffixFallback": "Severity",
+    "severityTag": {
+      "high": "High Severity",
+      "medium": "Medium Severity",
+      "low": "Low Severity"
+    }
+  },
+  "reportView": {
+    "tabs": {
+      "codeAnalysis": "Code Analysis",
+      "behaviorAnalysis": "Behavior Analysis",
+      "appInformation": "App Information",
+      "threatIntelligence": "Threat Intelligence",
+      "network": "Network",
+      "fingerprints": "Fingerprints",
+      "controlFlow": "Control Flow"
+    }
+  },
+  "analyzingView": {
+    "title": "We are analyzing your file",
+    "subtitle": "On average, it takes 3 minutes to analyze a file",
+    "helperText": "Fukhara combines multiple threat intelligence tools to produce thorough analysis of mobile apps",
+    "steps": {
+      "uploading": "Uploading file",
+      "staticAnalysis": "Running static analysis",
+      "threatIntelligence": "Checking threat intelligence",
+      "generatingReport": "Generating report"
+    },
+    "errors": {
+      "failed": "The analysis could not be completed. Please try uploading the file again.",
+      "notFound": "We could not find an analysis for this file. Please upload it again.",
+      "timeout": "The analysis is taking longer than expected. Please check back later.",
+      "unreachable": "We could not reach the analysis service. Please try again later."
+    }
+  },
+  "severity": {
+    "all": "All",
+    "high": "High",
+    "warning": "Warning",
+    "info": "Info",
+    "good": "Good",
+    "dangerous": "Dangerous",
+    "normal": "Normal",
+    "unknown": "Unknown"
+  },
+  "subVerdicts": {
+    "codeAnalysis": {
+      "headline": "{count} Vulnerabilities",
+      "highTag": "{count} High",
+      "warningTag": "{count} Warning",
+      "noIssues": "No Issues Found"
+    },
+    "behaviorAnalysis": {
+      "headline": "{count} Dangerous",
+      "moderateTag": "{count} Moderate",
+      "unclassifiedTag": "{count} Unclassified"
+    },
+    "appInformation": {
+      "headline": "{count} Critical",
+      "moderateTag": "{count} Moderate",
+      "lowTag": "{count} Low"
+    },
+    "threatIntelligence": {
+      "flaggedHeadline": "Flagged {count}×",
+      "noDetections": "No Detections",
+      "yaraTag": "{count} YARA Matches",
+      "noYaraTag": "No YARA Matches",
+      "avTag": "{count} AV Detections",
+      "notDetectedTag": "Not Detected by AV",
+      "avUnavailableTag": "AV results unavailable"
+    },
+    "network": {
+      "noBadDomains": "No Bad Domains",
+      "badDomainsHeadline": "{count} Bad Domains",
+      "ofacTag": "{count} OFAC-Listed"
+    },
+    "fingerprints": {
+      "headline": "{count} Identifiers Flagged"
+    },
+    "categories": {
+      "manipulator": "Manipulator",
+      "antiDebug": "Anti-Debug",
+      "antiVm": "Anti-VM",
+      "obfuscator": "Obfuscator",
+      "protector": "Protector"
+    }
+  },
+  "codeAnalysis": {
+    "listTitle": "Code Vulnerability · {count} of {total}",
+    "listTitleAll": "Code Vulnerability · {total}",
+    "cvss": "CVSS {score}",
+    "filesCount": "Files: {count}",
+    "owaspMobile": "OWASP Mobile",
+    "learnMore": "Learn more",
+    "opensInNewTab": "(opens in a new tab)"
+  },
+  "behaviorAnalysis": {
+    "permissionsTitle": "Permissions",
+    "permissionsTab": "Permissions ({count})",
+    "behavioursTab": "Behaviours ({count})",
+    "apiUsageTab": "API usage ({count})",
+    "behavioursTitle": "Detected behaviours",
+    "apiUsageTitle": "Sensitive API usage",
+    "confidence": "{value}% confidence",
+    "noDescription": "No description was reported.",
+    "noPermissions": "No permissions were reported for this app.",
+    "noBehaviours": "Quark Engine reported no behaviours for this app.",
+    "noApiUsage": "No sensitive API usage was reported."
+  },
+  "appInformation": {
+    "appDetailsTitle": "App Details",
+    "certificateTitle": "Certificate",
+    "componentsTitle": "Components",
+    "manifestFindingsTitle": "Manifest Findings",
+    "appName": "App name",
+    "package": "Package",
+    "version": "Version",
+    "versionValue": "{name} (build {code})",
+    "sdk": "Supported Android",
+    "sdkMin": "API {min} or later",
+    "sdkRange": "API {min} – {max}",
+    "signing": "Signing",
+    "signed": "Signed",
+    "unsigned": "Not signed",
+    "scheme": "v{version} scheme",
+    "validity": "Status",
+    "certValid": "Valid",
+    "certExpired": "Expired",
+    "certNotYetValid": "Not yet valid",
+    "issuer": "Issuer",
+    "validFrom": "Valid from",
+    "validTo": "Valid until",
+    "activities": "Activities ({count})",
+    "receivers": "Receivers ({count})",
+    "services": "Services ({count})",
+    "mainActivity": "Main",
+    "components": "Affected components",
+    "noComponentsForFinding": "No specific components were reported for this finding.",
+    "noDetails": "No app details were reported.",
+    "noCertificate": "No certificate details were reported.",
+    "noComponents": "No components were reported.",
+    "noManifest": "No manifest findings were reported."
+  },
+  "threatIntelligence": {
+    "yaraMatchesTitle": "YARA Matches",
+    "noYara": "No YARA matches were reported.",
+    "unknownSource": "Unknown file",
+    "avTitle": "Antivirus detections",
+    "avCount": "{count} engine | {count} engines",
+    "noAv": "VirusTotal returned no antivirus detections for this sample.",
+    "timelineTitle": "Sample timeline",
+    "noTimeline": "No timeline was reported for this sample.",
+    "externalTitle": "External reports",
+    "openReportFor": "Open {service} report",
+    "timeline": {
+      "oldest_file_found_in_apk": "Oldest file in APK",
+      "latest_file_found_in_apk": "Newest file in APK",
+      "certificate_valid_not_before": "Certificate valid from",
+      "certificate_valid_not_after": "Certificate valid until",
+      "first_submission_on_vt": "First submitted to VirusTotal",
+      "last_submission_on_vt": "Last submitted to VirusTotal",
+      "upload_on_fukhara": "Uploaded to Fukhara"
+    }
+  },
+  "network": {
+    "domainsTitle": "Domains",
+    "domainsTab": "Domains ({count})",
+    "urlsTab": "URLs ({count})",
+    "urlsTitle": "URLs by source file",
+    "malicious": "Malicious",
+    "ofac": "OFAC",
+    "ofacNote": "Flagged by MobSF's OFAC sanctions check.",
+    "ip": "IP address",
+    "location": "Location",
+    "coordinates": "Coordinates",
+    "url": "URL",
+    "urlCount": "URLs: {count}",
+    "unknownSource": "Unknown file",
+    "urlsNote": "Shown as text only. These URLs came from the analysed app and can't be opened from the report.",
+    "noDomains": "No domains were reported.",
+    "noUrls": "No URLs were reported.",
+    "noGeolocation": "No location data was reported for this domain."
+  },
+  "fingerprints": {
+    "fingerprintsTitle": "Fingerprints",
+    "identifiersTitle": "Identifiers",
+    "checksumsTitle": "Checksums",
+    "size": "Size",
+    "apkFile": "APK",
+    "unknownFilename": "Unknown",
+    "noChecksums": "No checksums were reported.",
+    "noIdentifiers": "No flagged identifiers were reported.",
+    "noFuzzyHashes": "No fuzzy hashes were reported."
+  },
+  "controlFlow": {
+    "title": "Not yet available",
+    "description": "Control-flow graph visualization is not yet defined by the backend. Check back once this section's data contract is finalized."
+  },
+  "aboutView": {
+    "title": "About Fukhara",
+    "onThisPage": "In this page",
+    "intro": "Fukhara checks Android apps and tells you whether they look dangerous. It is built and run by Jordan Open Source Association, in the open.",
+    "sections": {
+      "who": "Who is behind Fukhara",
+      "why": "Why Fukhara exists"
+    },
+    "who": {
+      "orgName": "Jordan Open Source Association",
+      "orgDescription": "JOSA is the not-for-profit organisation that works for a better Jordan through openness in technology.",
+      "body": "JOSA builds Fukhara, runs it, and answers for it. If a result looks wrong, or you want to know who has access to what, you can reach the people responsible.",
+      "glance": {
+        "organization": {
+          "label": "Organization",
+          "value": "Non-Profit"
+        },
+        "basedIn": {
+          "label": "Based in",
+          "value": "Amman, Jordan"
+        },
+        "founded": {
+          "label": "Founded",
+          "value": "2011"
+        }
+      }
+    },
+    "why": {
+      "p1": "An Android app is just a file, and anyone can send you one. Apps shared through chats, email or websites don't pass through a store's checks, and you can't tell a safe one from a dangerous one by looking at it.",
+      "p2": "Fukhara gives you a clear answer. Upload the file and we tell you whether it looks dangerous and why: plain language first, technical detail if you want it."
+    }
+  },
+  "footer": {
+    "ariaLabel": "Site footer",
+    "tagline": "Fukhara checks Android apps (.apk) and tells you, in plain language, whether they look dangerous and why.",
+    "aboutFukhara": "About Fukhara",
+    "builtBy": "Built and run by Jordan Open Source Association (JOSA).",
+    "josaWebsite": "Visit josa.ngo",
+    "dataTitle": "Your data",
+    "dataBody": "No account is needed. Your file is analyzed on JOSA's own servers. Threat databases such as VirusTotal and MalwareBazaar only receive the file's fingerprint (SHA-256), never the file itself.",
+    "privacyPolicy": "Privacy policy",
+    "openSourceTitle": "Open source",
+    "openSourceBody": "Every part of Fukhara is public. Read the code, audit how verdicts are made, or run your own copy.",
+    "webUiSource": "Web interface on GitHub",
+    "apiSource": "Analysis API on GitHub",
+    "newTab": "(opens in a new tab)"
+  }
+}

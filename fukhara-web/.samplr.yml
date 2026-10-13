@@ -1,0 +1,20 @@
+autogencomments: true
+
+excludes:
+  - ^.sample.*
+  - ^node_modules
+  - ^dist
+  - ^build
+  - ^public
+  - ^.nuxt
+  - ^.output
+  - ^.git
+  - ^.github
+  - ^.vscode
+  - ^.pre-commit-config.yaml
+  - ^.prettierrc.yaml
+
+includes:
+  - ^config
+  - Dockerfile
+  - .env

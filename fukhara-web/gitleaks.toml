@@ -1,0 +1,62 @@
+title = "JOSA Gitleaks configuration"
+
+[extend]
+useDefault = true
+disabledRules = [ "generic-api-key"]
+
+keywords = [
+  "auth",
+  "password",
+  "token",
+]
+
+tags = ["tag","another tag"]
+
+    [[rules.allowlists]]
+    description = "ignore commit A"
+    condition = "OR"
+    commits = [ "commit-A", "commit-B"]
+    paths = [
+      '''go\.mod''',
+      '''go\.sum'''
+    ]
+    stopwords = [
+      '''client''',
+      '''endpoint''',
+    ]
+
+    [[rules.allowlists]]
+    condition = "AND"
+    regexTarget = "match"
+    regexes = [ '''(?i)parseur[il]''' ]
+    paths = [ '''package-lock\.json''' ]
+
+[[rules]]
+id = "gitlab-pat"
+
+    [[rules.allowlists]]
+    regexTarget = "line"
+    regexes = [ '''MY-glpat-''' ]
+
+[[allowlists]]
+description = "global allow list"
+commits = [ "commit-A", "commit-B", "commit-C"]
+paths = [
+  '''gitleaks\.toml''',
+  '''(.*?)(jpg|gif|doc)'''
+]
+regexTarget = "match"
+regexes = [
+  '''219-09-9999''',
+  '''078-05-1120''',
+  '''(9[0-9]{2}|666)-\d{2}-\d{4}''',
+]
+stopwords = [
+  '''client''',
+  '''endpoint''',
+]
+
+[[allowlists]]
+targetRules = ["awesome-rule-1", "awesome-rule-2"]
+description = "Our test assets trigger false-positives in a couple rules."
+paths = ['''tests/expected/._\.json$''']

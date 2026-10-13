@@ -1,0 +1,13 @@
+services:
+  start:
+    container_name: fukhara-web
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: josaorg/fukhara-web:development
+    env_file: .env
+    environment:
+      - NUXT_API_PARTY_ENDPOINTS_FUKHARA_URL
+      - NUXT_PUBLIC_USE_MOCK=true
+    ports:
+      - '3000:3000'
