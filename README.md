@@ -18,7 +18,7 @@ You don't need to install anything else. Everything runs in Docker.
 **1. Clone the repo**
 
 ```sh
-git clone <repository-url> fukhara
+git clone https://github.com/wlaith/fukhara-bnn-monorepo.git fukhara
 cd fukhara
 ```
 
